@@ -1,4 +1,4 @@
-#include "Widgets/Pane.h"
+#include "Pane.h"
 
 Pane::Pane(const QString& name, QWidget* pParent)
   : QMainWindow(pParent)

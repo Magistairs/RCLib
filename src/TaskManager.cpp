@@ -1,4 +1,6 @@
-#include "TaskManager/TaskManager.h"
+#include "TaskManager.h"
+
+using namespace RCLib;
 
 TaskManager::TaskManager()
 	: m_stop(false)

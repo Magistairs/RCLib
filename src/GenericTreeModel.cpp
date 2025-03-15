@@ -1,4 +1,4 @@
-#include "ModelView/GenericTreeModel.h"
+#include "GenericTreeModel.h"
 
 GenericTreeModel::GenericTreeModel(QObject* pParent)
   : QAbstractItemModel(pParent)

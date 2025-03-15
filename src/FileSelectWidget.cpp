@@ -1,6 +1,6 @@
-#include "Widgets/FileSelectWidget.h"
+#include "FileSelectWidget.h"
 
-#include "Widgets/SmallButton.h"
+#include "SmallButton.h"
 
 class FileValidator : public QValidator
 {

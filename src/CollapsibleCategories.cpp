@@ -1,4 +1,4 @@
-#include "Widgets/CollapsibleCategories.h"
+#include "CollapsibleCategories.h"
 
 // Custom item delegate is needed because the default one doesn't render expand/collapse arrows if there is no indentation
 class CArrowDelegate : public QStyledItemDelegate

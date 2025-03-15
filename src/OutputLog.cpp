@@ -1,4 +1,4 @@
-#include "Widgets/OutputLog.h"
+#include "OutputLog.h"
 
 OutputLog::OutputLog(QWidget* pParent)
 	: QListWidget(pParent)

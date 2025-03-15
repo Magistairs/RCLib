@@ -1,4 +1,4 @@
-#include "Object/Variable.h"
+#include "Variable.h"
 
 QVariant Variable::GetValue()
 {

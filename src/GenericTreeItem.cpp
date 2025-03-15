@@ -1,4 +1,4 @@
-#include "ModelView/GenericTreeItem.h"
+#include "GenericTreeItem.h"
 
 GenericTreeItem::GenericTreeItem() {}
 

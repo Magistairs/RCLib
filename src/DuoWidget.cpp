@@ -1,4 +1,4 @@
-#include "Widgets/DuoWidget.h"
+#include "DuoWidget.h"
 
 DuoWidget::DuoWidget(QBoxLayout* pLayout)
 	: QWidget(pLayout->parentWidget())

@@ -1,4 +1,4 @@
-#include "Widgets/SmallButton.h"
+#include "SmallButton.h"
 
 SmallButton::SmallButton(const QString& text, QBoxLayout* pLayout)
 	: QPushButton(text)

@@ -1,5 +1,7 @@
 #pragma once
-#include <QtIncludes.h>
+#include "QtIncludes.h"
+
+namespace RCLib {
 
 class ConfigFile : public QFile
 {
@@ -21,3 +23,5 @@ signals:
 protected:
 	QJsonObject m_object;
 };
+
+} // namespace RCLib

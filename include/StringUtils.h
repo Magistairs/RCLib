@@ -1,8 +1,6 @@
 #pragma once
+#include "StdIncludes.h"
 #include "DLLExport.h"
-
-#include <guiddef.h>
-#include <string>
 
 namespace RCLib
 {

@@ -1,5 +1,7 @@
 #include "OutputLog.h"
 
+using namespace RCLib;
+
 OutputLog::OutputLog(QWidget* pParent)
 	: QListWidget(pParent)
 {

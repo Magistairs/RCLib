@@ -1,30 +1,26 @@
 #include "GameObject.h"
 #include "GameObjectManager.h"
-
-#include <assert.h>
-#include <combaseapi.h>
+#include <random>
 
 using namespace RCLib;
 
-RCLib::GameObject::GameObject()
+GameObject::GameObject()
 {
-	HRESULT res = CoCreateGuid(&m_GUID);
-	assert(res == S_OK);
+	// Génération d'un ID unique aléatoire
+	static std::random_device rd;
+	static std::mt19937_64 gen(rd());
+	static std::uniform_int_distribution<uint64_t> dis;
+	m_guid = dis(gen);
 }
 
-void RCLib::GameObject::Release()
+void GameObject::Release()
 {
-
 }
 
 void GameObject::Update()
 {
-
 }
 
-void GameObject::Serialize(bool load, ObjectPtr pJsonObject)
+void GameObject::Load()
 {
-
 }
-
-void GameObject::Load() {}

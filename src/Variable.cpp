@@ -1,5 +1,7 @@
 #include "Variable.h"
 
+using namespace RCLib;
+
 QVariant Variable::GetValue()
 {
 	if (m_dataMutex.try_lock())

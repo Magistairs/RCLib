@@ -1,5 +1,7 @@
 #include "ConfigFile.h"
 
+using namespace RCLib;
+
 ConfigFile::ConfigFile()
   : QFile()
 {

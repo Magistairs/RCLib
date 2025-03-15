@@ -9,9 +9,9 @@
 using namespace RCLib;
 
 Action::Action(const char* name)
-	: m_name(name)
+  : m_name(name)
 {
-	//SfmlUtils::ClearKeyEvent(m_shortcut);
+	// SfmlUtils::ClearKeyEvent(m_shortcut);
 	Engine::Get().GetEventSystem().AddQueuedEventCallback(this, Engine::eProcessedEvents, [this] { m_eventSystem.ProcessEvents(); });
 	m_eventSystem.AddQueuedEventCallback(this, Engine::eActionExecuteRequested, [this] { Execute(); });
 }
@@ -63,14 +63,7 @@ std::string Action::GetShortcutString() const
 	return m_shortcutStr;
 }
 
-void Action::Serialize(bool load, ObjectPtr pJsonObject)
-{
-}
-
-void Action::Load()
-{
-
-}
+void Action::Load() {}
 
 void RCLib::Action::SetActionsToExecute(std::vector<std::string>& actionsToExecute)
 {

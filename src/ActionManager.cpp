@@ -57,28 +57,20 @@ bool RCLib::ActionManager::ExecuteAction(const char* name)
 	return false;
 }
 
-void ActionManager::Serialize(bool load, ObjectPtr pJsonObject)
-{
-	for (ActionPtr& action : m_actions)
-	{
-		action->Serialize(load, pJsonObject);
-	}
-}
-
 void ActionManager::Save()
 {
-	//Serializer    serializer;
-	//ObjectPtr pRoot = serializer.CreateRoot();
-	//Serialize(false, pRoot);
-	//serializer.Write("action.json");
+	// Serializer    serializer;
+	// ObjectPtr pRoot = serializer.CreateRoot();
+	// Serialize(false, pRoot);
+	// serializer.Write("action.json");
 }
 
 void ActionManager::Load()
 {
-	//Serializer serializer;
-	//if (serializer.Parse("action.json"))
+	// Serializer serializer;
+	// if (serializer.Parse("action.json"))
 	//{
 	//	ObjectPtr pRoot = serializer.GetRoot();
 	//	Serialize(true, pRoot);
-	//}
+	// }
 }

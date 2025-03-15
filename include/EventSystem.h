@@ -1,14 +1,7 @@
 #pragma once
+#include "StdIncludes.h"
 #include "Logger.h"
 #include "DLLExport.h"
-
-#include <deque>
-#include <functional>
-#include <iostream>
-#include <shared_mutex>
-#include <string>
-#include <unordered_map>
-#include <vector>
 
 namespace RCLib
 {

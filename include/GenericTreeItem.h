@@ -1,6 +1,8 @@
 #pragma once
 #include <QtIncludes.h>
 
+namespace RCLib {
+
 class GenericTreeItem
 {
 public:
@@ -15,3 +17,5 @@ protected:
 	QModelIndex                   m_index;
 	std::vector<GenericTreeItem*> m_children;
 };
+
+} // namespace RCLib

@@ -2,6 +2,8 @@
 #include "QtIncludes.h"
 #include "SmartPtr.h"
 
+namespace RCLib {
+
 class Variable : public SmartPtrTarget
 {
 public:
@@ -27,4 +29,7 @@ private:
 
 	mutable std::mutex m_dataMutex;
 };
-typedef SmartPtr<Variable> CPropertyPtr;
+
+using VariablePtr = SmartPtr<Variable>;
+
+} // namespace RCLib

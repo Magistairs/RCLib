@@ -1,10 +1,7 @@
 #pragma once
+#include "StdIncludes.h"
+#include "DLLExport.h"
 #include "GameObject.h"
-
-#include <guiddef.h>
-#include <memory>
-#include <shared_mutex>
-#include <vector>
 
 namespace RCLib
 {
@@ -19,8 +16,8 @@ namespace RCLib
 		void Init();
 
 		GameObjectPtr CreateObject();
-		void          RemoveObject(REFGUID objectGUID);
-		GameObjectPtr GetObject(REFGUID objectGUID) const;
+		void          RemoveObject(uint64_t objectGuid);
+		GameObjectPtr GetObject(uint64_t objectGuid) const;
 
 		void ForEachObject(const std::function<void(GameObjectPtr)>& func) const;
 

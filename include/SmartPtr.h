@@ -1,6 +1,8 @@
 #pragma once
 #include "StdIncludes.h"
 
+namespace RCLib {
+
 template<class T>
 class SmartPtr
 {
@@ -77,3 +79,5 @@ public:
 private:
 	std::atomic_int m_nRefCount{0};
 };
+
+} // namespace RCLib

@@ -1,5 +1,7 @@
 #include "FileSelectWidget.h"
 
+using namespace RCLib;
+
 #include "SmallButton.h"
 
 class FileValidator : public QValidator

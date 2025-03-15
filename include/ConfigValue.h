@@ -1,12 +1,14 @@
 #pragma once
 #include "ConfigFile.h"
-#include <QtIncludes.h>
+#include "QtIncludes.h"
 
 #define DECLARE_CONFIG_VALUE(name) \
 	ConfigValue name                 \
 	{                                \
 		#name, &m_config               \
 	}
+
+namespace RCLib {
 
 class ConfigValue : public QObject
 {
@@ -23,3 +25,5 @@ protected:
 	QString     m_label;
 	ConfigFile* m_pFile{nullptr};
 };
+
+} // namespace RCLib

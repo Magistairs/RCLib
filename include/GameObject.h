@@ -1,10 +1,7 @@
 #pragma once
+#include "StdIncludes.h"
+#include "Object.h"
 #include "Serializable.h"
-
-#include <memory>
-#include <shared_mutex>
-#include <vector>
-#include <guiddef.h>
 
 namespace RCLib
 {
@@ -16,14 +13,14 @@ namespace RCLib
 	public:
 		struct GUIDCompare
 		{
-			GUIDCompare(REFGUID guid)
+			GUIDCompare(uint64_t guid)
 				: m_guid(guid)
 			{
 			}
 
 			bool operator()(const GameObjectPtr& object) const { return object->GetGUID() == m_guid; }
 
-			REFGUID m_guid;
+			uint64_t m_guid;
 		};
 
 		GameObject();
@@ -31,14 +28,12 @@ namespace RCLib
 
 		void Update();
 
-		GUID GetGUID() const { return m_GUID; }
-
-		void Serialize(bool load, ObjectPtr pJsonObject) override;
+		uint64_t GetGUID() const { return m_guid; }
 
 	protected:
 		void Load() override;
 
 	private:
-		GUID                          m_GUID{ 0 };
+		uint64_t m_guid{ 0 };
 	};
 } // namespace RCLib

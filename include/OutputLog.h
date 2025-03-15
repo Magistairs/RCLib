@@ -1,6 +1,8 @@
 #pragma once
 #include <QtIncludes.h>
 
+namespace RCLib {
+
 class OutputLog : public QListWidget
 {
 public:
@@ -17,3 +19,5 @@ public:
 
 	void Log(QString, ELogLevel);
 };
+
+} // namespace RCLib

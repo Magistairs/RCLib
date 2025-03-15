@@ -1,5 +1,7 @@
 #include "GenericTreeModel.h"
 
+using namespace RCLib;
+
 GenericTreeModel::GenericTreeModel(QObject* pParent)
   : QAbstractItemModel(pParent)
 {

@@ -1,4 +1,5 @@
 #pragma once
+#include "StdIncludes.h"
 #include "DLLExport.h"
 
 #include <mutex>

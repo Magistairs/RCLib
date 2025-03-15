@@ -1,8 +1,9 @@
 #pragma once
-#include "Variable.h"
 #include "SmartPtr.h"
 
-class Object :public SmartPtrTarget
+namespace RCLib {
+
+class Object : public SmartPtrTarget
 {
 public:
 	Object() {}
@@ -11,3 +12,5 @@ public:
 };
 
 using ObjectPtr = SmartPtr<Object>;
+
+} // namespace RCLib

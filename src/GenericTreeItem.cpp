@@ -1,5 +1,7 @@
 #include "GenericTreeItem.h"
 
+using namespace RCLib;
+
 GenericTreeItem::GenericTreeItem() {}
 
 GenericTreeItem::~GenericTreeItem()

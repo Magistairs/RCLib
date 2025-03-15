@@ -2,9 +2,8 @@
 #include "Action.h"
 #include "Engine.h"
 #include "Logger.h"
-#include "SmartPtr.h"
 #include "MemoryTracking.h"
-#include "GuidUtils.h"
+#include "SmartPtr.h"
 
 #include <assert.h>
 #include <string>
@@ -44,59 +43,61 @@ void RCLib::GameObjectManager::Init()
 
 GameObjectPtr GameObjectManager::CreateObject()
 {
-	GameObjectPtr pNewObject = make_shared(GameObject);
-	{
-		std::lock_guard<std::shared_mutex> lock(m_objectsMutex);
-		m_objects.push_back(pNewObject);
-	}
+	std::lock_guard<std::shared_mutex> lock(m_objectsMutex);
+
+	GameObjectPtr pObject = std::make_shared<GameObject>();
+	m_objects.push_back(pObject);
+
 	if (m_infoLogEnabled)
 	{
-		std::string message = "Object created. " + std::to_string(m_objects.size()) + " in total.";
+		std::string message = "Object " + std::to_string(pObject->GetGUID()) + " created.";
 		Logger::Get().Log(Logger::eInfo, message);
 	}
-	return pNewObject;
+
+	return pObject;
 }
 
-void GameObjectManager::RemoveObject(REFGUID objectGUID)
+void GameObjectManager::RemoveObject(uint64_t objectGuid)
 {
 	std::lock_guard<std::shared_mutex> lock(m_objectsMutex);
-	if (auto it = std::find_if(m_objects.begin(), m_objects.end(), GameObject::GUIDCompare(objectGUID)); it != m_objects.end())
+
+	if (auto it = std::find_if(m_objects.begin(), m_objects.end(), GameObject::GUIDCompare(objectGuid)); it != m_objects.end())
 	{
-		GameObjectPtr                 pObject = (*it);
-		pObject->Release();
 		m_objects.erase(it);
+
 		if (m_infoLogEnabled)
 		{
-			std::string message = "Object " + GuidUtils::GuidToString(objectGUID) + " removed.";
+			std::string message = "Object " + std::to_string(objectGuid) + " removed.";
 			Logger::Get().Log(Logger::eInfo, message);
 		}
 	}
 	else
 	{
-		std::string message = "Object " + GuidUtils::GuidToString(objectGUID) + " asked to be removed but was not found!";
+		std::string message = "Object " + std::to_string(objectGuid) + " asked to be removed but was not found!";
 		Logger::Get().Log(Logger::eWarning, message);
 	}
 }
 
-GameObjectPtr GameObjectManager::GetObject(REFGUID objectGUID) const
+GameObjectPtr GameObjectManager::GetObject(uint64_t objectGuid) const
 {
 	std::shared_lock<std::shared_mutex> lock(m_objectsMutex);
-	if (auto it = std::find_if(m_objects.begin(), m_objects.end(), GameObject::GUIDCompare(objectGUID)); it != m_objects.end())
+
+	if (auto it = std::find_if(m_objects.begin(), m_objects.end(), GameObject::GUIDCompare(objectGuid)); it != m_objects.end())
 	{
 		return *it;
 	}
-	else
-	{
-		std::string message = "Object " + GuidUtils::GuidToString(objectGUID) + " asked but was not found!";
-		Logger::Get().Log(Logger::eWarning, message);
-	}
-	return GameObjectPtr();
+
+	std::string message = "Object " + std::to_string(objectGuid) + " asked but was not found!";
+	Logger::Get().Log(Logger::eWarning, message);
+
+	return nullptr;
 }
 
 void RCLib::GameObjectManager::ForEachObject(const std::function<void(GameObjectPtr)>& func) const
 {
 	std::shared_lock<std::shared_mutex> lock(m_objectsMutex);
-	for (GameObjectPtr pObject : m_objects)
+
+	for (const auto& pObject : m_objects)
 	{
 		func(pObject);
 	}

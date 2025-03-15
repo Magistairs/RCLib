@@ -1,5 +1,7 @@
 #include "SmallButton.h"
 
+using namespace RCLib;
+
 SmallButton::SmallButton(const QString& text, QBoxLayout* pLayout)
 	: QPushButton(text)
 {

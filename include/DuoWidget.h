@@ -1,5 +1,7 @@
 #pragma once
-#include <QtIncludes.h>
+#include "QtIncludes.h"
+
+namespace RCLib {
 
 class DuoWidget : public QWidget
 {
@@ -9,3 +11,5 @@ public:
 
 	QBoxLayout* GetLayout() const { return static_cast<QBoxLayout*>(layout()); }
 };
+
+} // namespace RCLib

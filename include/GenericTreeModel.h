@@ -4,6 +4,9 @@
 
 // #define ENABLE_TEST
 
+namespace RCLib
+{
+
 class GenericTreeModel : public QAbstractItemModel
 {
 public:
@@ -28,3 +31,6 @@ protected:
 	QAbstractItemModelTester* m_pModelTester{nullptr};
 #endif
 };
+using GenericTreeModelPtr = std::shared_ptr<GenericTreeModel>;
+
+} // namespace RCLib

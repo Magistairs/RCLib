@@ -1,10 +1,6 @@
 #pragma once
+#include "StdIncludes.h"
 #include "DLLExport.h"
-
-#include <iostream>
-#include <memory>
-#include <shared_mutex>
-#include <unordered_map>
 
 // Macro to create a tracked shared_ptr
 #ifdef _DEBUG

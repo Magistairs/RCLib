@@ -1,6 +1,8 @@
 #pragma once
 #include "DuoWidget.h"
 
+namespace RCLib {
+
 class FileSelectWidget : public DuoWidget
 {
 	Q_OBJECT
@@ -24,3 +26,5 @@ protected:
 	QLineEdit* m_pPathLabel;
 	EType      m_type;
 };
+
+} // namespace RCLib

@@ -1,5 +1,7 @@
 #include "DuoWidget.h"
 
+using namespace RCLib;
+
 DuoWidget::DuoWidget(QBoxLayout* pLayout)
 	: QWidget(pLayout->parentWidget())
 {

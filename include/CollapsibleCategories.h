@@ -1,6 +1,8 @@
 #pragma once
 #include <QtIncludes.h>
 
+namespace RCLib {
+
 class CollapsibleCategories : public QTreeWidget
 {
 public:
@@ -10,3 +12,5 @@ public:
 
 	virtual bool eventFilter(QObject* object, QEvent* event) override;
 };
+
+} // namespace RCLib

@@ -1,6 +1,7 @@
 #pragma once
-#include "Action.h"
+#include "StdIncludes.h"
 #include "DLLExport.h"
+#include "Action.h"
 #include "Serializable.h"
 #include "SmartPtr.h"
 #include "Object.h"
@@ -20,8 +21,6 @@ namespace RCLib
 
 		ActionPtr AddAction(const char* name);
 		bool      ExecuteAction(const char* name);
-
-		void Serialize(bool load, ObjectPtr pJsonObject) override;
 
 	protected:
 		void Save() override;

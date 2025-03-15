@@ -1,11 +1,8 @@
 #pragma once
+#include "StdIncludes.h"
 #include "DLLExport.h"
 #include "EventSystem.h"
 #include "Serializable.h"
-
-#include <functional>
-#include <memory>
-#include <string>
 
 namespace RCLib
 {
@@ -21,8 +18,6 @@ namespace RCLib
 		void               SetShortcut(const std::string& shortcut);
 		std::string        GetShortcutString() const;
 		const std::string& GetName() const { return m_name; }
-
-		void Serialize(bool load, ObjectPtr pJsonObject) override;
 
 		static void SetActionsToExecute(std::vector<std::string>& actionsToExecute);
 

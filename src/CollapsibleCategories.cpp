@@ -1,5 +1,7 @@
 #include "CollapsibleCategories.h"
 
+using namespace RCLib;
+
 // Custom item delegate is needed because the default one doesn't render expand/collapse arrows if there is no indentation
 class CArrowDelegate : public QStyledItemDelegate
 {

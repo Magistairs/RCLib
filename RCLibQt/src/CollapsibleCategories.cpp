@@ -1,11 +1,10 @@
-#include "RCLibQt.h"
 #include "CollapsibleCategories.h"
-#include "RCLib.h"
+#include "RCLibQt.h"
 
 #include <QApplication>
+#include <QPainter>
 #include <QStyle>
 #include <QStyledItemDelegate>
-#include <QPainter>
 
 using namespace RCLib::Qt;
 

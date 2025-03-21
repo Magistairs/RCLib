@@ -1,5 +1,5 @@
 #pragma once
-#include "DLLExport.h"
+#include "RCLib_Fwd.h"
 
 namespace RCLib
 {
@@ -9,8 +9,8 @@ namespace RCLib
 class RCLIB_API IException
 {
 public:
-    virtual ~IException() = default;
-    virtual const char* what() const noexcept = 0;
+	virtual ~IException()                     = default;
+	virtual const char* what() const noexcept = 0;
 };
 
-} // namespace RCLib 
+} // namespace RCLib

@@ -1,6 +1,8 @@
 #pragma once
 #include "RCLib_Fwd.h"
 
+#include <type_traits>
+
 namespace RCLib
 {
 

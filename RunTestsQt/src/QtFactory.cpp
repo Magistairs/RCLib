@@ -1,9 +1,17 @@
 #include "QtFactory.h"
 
-namespace RCLibQt
+namespace TestsQt
 {
 
-// The implementation is in the header file since we're using templates
-// This file is kept for future non-template implementations if needed
+RCLib::SharedPtr<void> QtFactory::DoCreate(const std::type_info& type, const CreateArgs& args)
+{
+	if (type == typeid(RCLib::ILogger))
+	{
+		return RCLib::MakeShared<QtLogger>();
+	}
 
-} // namespace RCLibQt 
+	// For other types, use the default implementation
+	return RCLib::Impl::DefaultFactory::CreateImpl(type, args);
+}
+
+} // namespace TestsQt

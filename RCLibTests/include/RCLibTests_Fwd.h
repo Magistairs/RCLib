@@ -27,6 +27,6 @@ RCLIB_DECLARE_PTR(ITestEventManager);
 RCLIB_DECLARE_PTR(ITestMessageManager);
 RCLIB_DECLARE_PTR(ITestCommandManager);
 RCLIB_DECLARE_PTR(ITestCommand);
-}
-}
-} // namespace RCLib 
+} // namespace Tests
+
+} // namespace RCLib

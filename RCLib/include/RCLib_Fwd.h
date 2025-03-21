@@ -25,10 +25,10 @@ RCLIB_DECLARE_PTR(IMemoryManager);
 RCLIB_DECLARE_PTR(ITestRunner);
 
 // Forward declarations for core classes
-RCLIB_DECLARE_PTR(IEntity);
 RCLIB_DECLARE_PTR(ICommand);
-RCLIB_DECLARE_PTR(IMessage);
+RCLIB_DECLARE_PTR(IEntity);
 RCLIB_DECLARE_PTR(IEvent);
+RCLIB_DECLARE_PTR(IMessage);
 RCLIB_DECLARE_PTR(ITest);
 
 // Core types

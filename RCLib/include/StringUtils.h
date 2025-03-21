@@ -3,8 +3,8 @@
 
 namespace RCLib
 {
-	namespace StringUtils
-	{
+namespace StringUtils
+{
 
-	} // namespace StringUtils
+} // namespace StringUtils
 } // namespace RCLib

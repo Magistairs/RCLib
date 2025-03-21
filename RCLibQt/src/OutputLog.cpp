@@ -1,8 +1,8 @@
-#include "RCLibQt.h"
 #include "OutputLog.h"
-#include "RCLib.h"
+#include "RCLibQt.h"
 
-using namespace RCLib::Qt;
+namespace RCLib::Qt
+{
 
 OutputLog::OutputLog(QWidget* parent)
   : QListWidget(parent)
@@ -26,9 +26,10 @@ void OutputLog::Log(QString str, ELogLevel level)
 	QListWidgetItem* pItem = item(count() - 1);
 
 	if (level == Warning)
-		pItem->setForeground(QBrush(Qt::yellow));
+		pItem->setForeground(QBrush(::Qt::yellow));
 	else if (level == Error)
-		pItem->setForeground(QBrush(Qt::red));
+		pItem->setForeground(QBrush(::Qt::red));
 
 	scrollToItem(pItem);
 }
+} // namespace RCLib::Qt

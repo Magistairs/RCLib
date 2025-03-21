@@ -1,10 +1,13 @@
 #pragma once
 #include "RCLibQt_Fwd.h"
+
 #include <QListWidget>
 #include <QString>
 
-namespace RCLib {
-namespace Qt {
+namespace RCLib
+{
+namespace Qt
+{
 
 class OutputLog : public QListWidget
 {

@@ -1,15 +1,17 @@
 #pragma once
 #include "RCLibQt_Fwd.h"
-#include <QAbstractItemModel>
+
 #include <map>
-#include "DLLExport.h"
-#include "GenericTreeItem.h"
-#include "SmartPointers.h"
+#include <memory>
 
-namespace RCLib {
-namespace Qt {
+#include <QAbstractItemModel>
 
-class GenericTreeModel : public QAbstractItemModel
+namespace RCLib
+{
+namespace Qt
+{
+
+class RCLIB_QT_API GenericTreeModel : public QAbstractItemModel
 {
 public:
 	GenericTreeModel(QObject* pParent);

@@ -102,7 +102,7 @@ ICommandPtr DefaultCommandManager::AddCommand(std::string_view name)
 	}
 
 	std::lock_guard<std::mutex> lock(m_mutex);
-	auto                        command = IEngine::Get().GetFactory()->Create<ICommand>();
+	auto                        command = IFactory::Get()->Create<ICommand>();
 	m_commands[std::string(name)]       = command;
 	IEngine::Get().GetLogger()->Info(std::string("Command added: ").append(name));
 	return command;

@@ -1,35 +1,37 @@
 #include "TestMain.h"
-#include "RCLib.h"
+
+#include <RCLib.h>
+
 #include <iostream>
 
 namespace Tests
 {
 
 TestMain::TestMain()
-    : m_engine(RCLib::IEngine::Get().GetFactory()->Create<RCLib::IEngine>())
+    : m_engine("Engine", RCLib::IFactory::Get()->Create<RCLib::IEngine>())
 {
 }
 
-void TestMain::OnInitialize()
+bool TestMain::OnInitialize()
 {
-    m_engine->Initialize();
+   return  m_engine.Get()->OnInitialize();
 }
 
-void TestMain::OnUpdate()
+bool TestMain::OnUpdate()
 {
-    while(m_engine->Update());
+    while(m_engine.Get()->OnUpdate());
+    return true;
 }
 
 void TestMain::OnRelease()
 {
-    m_engine->Release();
+    m_engine.Release();
 }
 
 bool TestMain::RunTests()
 {
     try
     {
-        m_engine->GetTestRunner()->RunAllTests();
         return true;
     }
     catch (const std::exception& e)

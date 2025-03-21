@@ -1,7 +1,5 @@
-#include "RCLibQt.h"
 #include "GenericTreeView.h"
-#include "GenericTreeModel.h"
-#include "RCLib.h"
+#include "RCLibQt.h"
 
 using namespace RCLib::Qt;
 
@@ -10,8 +8,8 @@ GenericTreeView::GenericTreeView(QWidget* pParent)
 {
 }
 
-void GenericTreeView::SetModel(SharedPtr<GenericTreeModel> pModel)
+void GenericTreeView::SetModel(GenericTreeModel* pModel)
 {
 	m_pModel = pModel;
-	setModel(m_pModel.get());
+	setModel(m_pModel);
 }

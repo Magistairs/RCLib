@@ -1,6 +1,6 @@
 #pragma once
-#include "RCLib_Fwd.h"
-#include "DefaultStateWrapper.h"
+#include <RCLib_Fwd.h>
+#include <DefaultStateWrapper.h>
 
 namespace Tests
 {
@@ -14,8 +14,8 @@ public:
     ~TestMain() override = default;
 
     // ITriState interface
-    void OnInitialize() override;
-    void OnUpdate() override;
+    bool OnInitialize() override;
+    bool OnUpdate() override;
     void OnRelease() override;
 
     /**
@@ -25,6 +25,6 @@ public:
     bool RunTests();
 
 private:
-    RCLib::DefaultStateWrapper<RCLib::IEngine> m_engine;
+    RCLib::Impl::DefaultStateWrapper<RCLib::IEngine> m_engine;
 };
 } // namespace Tests 

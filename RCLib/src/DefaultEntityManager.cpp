@@ -30,7 +30,7 @@ IEntityPtr DefaultEntityManager::CreateEntity()
 {
 	std::lock_guard<std::mutex> lock(m_entityMutex);
 	TEntityId                   entityId = m_nextEntityId++;
-	m_entities[entityId]                 = IEngine::Get().GetFactory()->Create<IEntity>();
+	m_entities[entityId]                 = IFactory::Get()->Create<IEntity>();
 	return m_entities[entityId];
 }
 

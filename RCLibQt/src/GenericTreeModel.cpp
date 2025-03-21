@@ -1,15 +1,13 @@
-#include "RCLibQt.h"
 #include "GenericTreeModel.h"
-#include "RCLib.h"
+#include "GenericTreeItem.h"
+#include "RCLibQt.h"
 
-using namespace RCLib::Qt;
+namespace RCLib::Qt
+{
 
 GenericTreeModel::GenericTreeModel(QObject* pParent)
   : QAbstractItemModel(pParent)
 {
-#ifdef ENABLE_TEST
-	m_pModelTester = new QAbstractItemModelTester(this, QAbstractItemModelTester::FailureReportingMode::Fatal);
-#endif
 }
 
 void GenericTreeModel::SetRoot(const SharedPtr<GenericTreeItem>& pRoot)
@@ -78,3 +76,4 @@ GenericTreeItem* GenericTreeModel::GetData(const QModelIndex& index)
 {
 	return static_cast<GenericTreeItem*>(index.internalPointer());
 }
+} // namespace RCLib::Qt

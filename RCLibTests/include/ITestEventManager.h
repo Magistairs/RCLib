@@ -1,5 +1,5 @@
 #pragma once
-#include "RCLib_Fwd.h"
+#include "RCLibTests_Fwd.h"
 
 namespace RCLib
 {
@@ -12,7 +12,7 @@ namespace RCLib
  * - Multiple listeners for same event
  * - Thread safety
  */
-class RCLIB_API ITestEventManager
+class RCLIBTESTS_API ITestEventManager
 {
 public:
 	virtual ~ITestEventManager() = default;

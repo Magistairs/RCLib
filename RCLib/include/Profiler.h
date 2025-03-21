@@ -1,9 +1,10 @@
 #pragma once
 
-#include "DLLExport.h"
+#include "RCLib_Fwd.h"
 
 #include <chrono>
 #include <string>
+#include <string_view>
 
 #define PROFILE_SCOPE(name) RCLib::Profiler __profiler(name)
 #define PROFILE_FUNCTION    RCLib::Profiler __functionProfiler(__FUNCTION__);

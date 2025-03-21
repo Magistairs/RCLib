@@ -1,11 +1,15 @@
 #pragma once
+#include "RCLibQt_Fwd.h"
+
 #include <QModelIndex>
 #include <vector>
 
-namespace RCLib {
-namespace Qt {
+namespace RCLib
+{
+namespace Qt
+{
 
-class GenericTreeItem
+class RCLIB_QT_API GenericTreeItem
 {
 public:
 	GenericTreeItem();

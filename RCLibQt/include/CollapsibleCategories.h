@@ -1,16 +1,19 @@
 #pragma once
 #include "RCLibQt_Fwd.h"
+
+#include <QEvent>
+#include <QMap>
+#include <QObject>
+#include <QString>
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
-#include <QMap>
-#include <QString>
-#include <QObject>
-#include <QEvent>
 
-namespace RCLib {
-namespace Qt {
+namespace RCLib
+{
+namespace Qt
+{
 
-class CollapsibleCategories : public QTreeWidget
+class RCLIB_QT_API CollapsibleCategories : public QTreeWidget
 {
 public:
 	CollapsibleCategories(QWidget* parent = nullptr);

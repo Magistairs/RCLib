@@ -1,16 +1,18 @@
-#include "RCLibQt.h"
 #include "FileSelectWidget.h"
-#include "RCLib.h"
 #include "DefaultWidgetsFactory.h"
+#include "RCLibQt.h"
 
-#include <QLineEdit>
-#include <QValidator>
+#include <QBoxLayout>
+#include <QDesktopServices>
 #include <QFile>
 #include <QFileDialog>
-#include <QDesktopServices>
+#include <QLineEdit>
+#include <QPushButton>
 #include <QUrl>
+#include <QValidator>
 
-using namespace RCLib::Widgets;
+namespace RCLib::Qt
+{
 
 class FileValidator : public QValidator
 {
@@ -35,7 +37,7 @@ FileSelectWidget::FileSelectWidget(QBoxLayout* pLayout, EType type)
 	m_pPathLabel->setValidator(new FileValidator(this));
 	connect(m_pPathLabel, &QLineEdit::editingFinished, [this] { fileChanged(m_pPathLabel->text()); });
 
-	Impl::WidgetsFactoryImpl factory;
+	RCLib::Qt::Impl::DefaultWidgetsFactory factory;
 
 	auto* pBrowseButton = factory.CreateSmallButton();
 	pBrowseButton->setText("Browse...");
@@ -62,3 +64,4 @@ void FileSelectWidget::SetFile(const QString& path)
 		fileChanged(path);
 	}
 }
+} // namespace RCLib::Qt

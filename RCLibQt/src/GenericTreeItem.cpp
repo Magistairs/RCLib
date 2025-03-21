@@ -1,6 +1,5 @@
-#include "RCLibQt.h"
 #include "GenericTreeItem.h"
-#include "RCLib.h"
+#include "RCLibQt.h"
 
 using namespace RCLib::Qt;
 

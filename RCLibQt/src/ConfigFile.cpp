@@ -1,11 +1,10 @@
-#include "RCLibQt.h"
 #include "ConfigFile.h"
-#include "RCLib.h"
+#include "RCLibQt.h"
 
 #include <QDir>
-#include <QStandardPaths>
-#include <QJsonDocument>
 #include <QFileInfo>
+#include <QJsonDocument>
+#include <QStandardPaths>
 
 using namespace RCLib::Qt;
 

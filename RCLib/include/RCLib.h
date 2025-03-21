@@ -1,4 +1,5 @@
 #pragma once
+#include "RCLib_Fwd.h"
 
 #include "DefaultStateWrapper.h"
 #include "ICommand.h"

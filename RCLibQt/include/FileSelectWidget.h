@@ -1,13 +1,15 @@
 #pragma once
-#include "RCLibQt_Fwd.h"
-#include "DLLExport.h"
 #include "DuoWidget.h"
+#include "RCLibQt_Fwd.h"
+
 #include <QLineEdit>
 
-namespace RCLib {
-namespace Qt {
+namespace RCLib
+{
+namespace Qt
+{
 
-class RCLIB_API FileSelectWidget : public DuoWidget
+class RCLIB_QT_API FileSelectWidget : public DuoWidget
 {
 	Q_OBJECT
 

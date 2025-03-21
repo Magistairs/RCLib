@@ -1,13 +1,15 @@
-﻿#include "RCLib.h"
+﻿#include <DefaultStateWrapper.h>
+#include <RCLibTests.h>
+
 #include "TestMain.h"
 
 int main(int argc, char* argv[])
 {
-	RCLib::DefaultStateWrapper<Tests::TestMain> testMain;
+	RCLib::Impl::DefaultStateWrapper<Tests::TestMain> testMain("TestMain", RCLib::IFactory::Get()->Create<Tests::TestMain>());
 
 	testMain.Initialize();
-	bool success = testMain.Update();
+	testMain.Update();
 	testMain.Release();
 
-	return success ? 0 : 1;
+	return 1;
 }

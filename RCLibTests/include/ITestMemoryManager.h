@@ -7,7 +7,7 @@ namespace RCLib::Tests
 /**
  * @brief Interface for testing the memory manager
  */
-class RCLIB_API ITestMemoryManager
+class RCLIBTESTS_API ITestMemoryManager
 {
 public:
 	virtual ~ITestMemoryManager() = default;

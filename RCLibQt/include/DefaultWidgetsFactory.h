@@ -1,25 +1,25 @@
 #pragma once
-#include "RCLibQt_Fwd.h"
 #include "IWidgetsFactory.h"
+#include "RCLibQt_Fwd.h"
 
-namespace RCLib::Widgets::Impl
+namespace RCLib::Qt::Impl
 {
 
-class RCLIBQT_API DefaultWidgetsFactory : public IWidgetsFactory
+class RCLIB_QT_API DefaultWidgetsFactory : public RCLib::Qt::IWidgetsFactory
 {
 public:
-    DefaultWidgetsFactory() = default;
-    ~DefaultWidgetsFactory() override = default;
+	friend RCLib::Qt::IWidgetsFactory& RCLib::Qt::IWidgetsFactory::Get();
 
-    // IWidgetsFactory interface
-    DuoWidget* CreateDuoWidget(QBoxLayout* layout) override;
-    FileSelectWidget* CreateFileSelectWidget(QBoxLayout* layout, bool isDirectory = false) override;
-    CollapsibleCategories* CreateCollapsibleCategories(QWidget* parent = nullptr) override;
-    OutputLog* CreateOutputLog(QWidget* parent = nullptr) override;
-    TestRunnerWidget* CreateTestRunnerWidget(QWidget* parent = nullptr) override;
-    QPushButton* CreateSmallButton(QWidget* parent = nullptr) override;
-    QPushButton* CreateMediumButton() override;
-    QPushButton* CreateLargeButton() override;
+	DefaultWidgetsFactory()           = default;
+	~DefaultWidgetsFactory() override = default;
+
+	// IWidgetsFactory interface
+	DuoWidget*             CreateDuoWidget(QBoxLayout* layout) override;
+	FileSelectWidget*      CreateFileSelectWidget(QBoxLayout* layout, bool isDirectory = false) override;
+	CollapsibleCategories* CreateCollapsibleCategories(QWidget* parent = nullptr) override;
+	OutputLog*             CreateOutputLog(QWidget* parent = nullptr) override;
+	TestRunnerWidget*      CreateTestRunnerWidget(QWidget* parent = nullptr) override;
+	QPushButton*           CreateSmallButton(QWidget* parent = nullptr) override;
 };
 
-} // namespace RCLib::Widgets::Impl 
+} // namespace RCLib::Qt::Impl

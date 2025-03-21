@@ -1,13 +1,11 @@
 #pragma once
 #include "RCLibQt_Fwd.h"
-#include "DLLExport.h"
-
 
 class QBoxLayout;
 class QWidget;
 class QPushButton;
 
-namespace RCLib::Widgets
+namespace RCLib::Qt
 {
 
 // Forward declarations
@@ -21,6 +19,8 @@ class TestRunnerWidget;
 class RCLIB_API IWidgetsFactory
 {
 public:
+	static IWidgetsFactory& Get();
+
 	virtual ~IWidgetsFactory() = default;
 
 	// DuoWidget and derivatives
@@ -39,4 +39,4 @@ protected:
 	IWidgetsFactory() = default;
 };
 
-} // namespace RCLib::Widgets
+} // namespace RCLib::Qt

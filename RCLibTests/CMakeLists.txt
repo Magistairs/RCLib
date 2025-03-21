@@ -23,8 +23,7 @@ add_library(RCLibTests SHARED
 
 target_compile_definitions(RCLibTests 
     PRIVATE 
-        RCLIB_TESTS_EXPORT
-        RCLIB_TESTS_AVAILABLE
+        RCLIBTESTS_EXPORT
 )
 
 target_include_directories(RCLibTests 
@@ -39,8 +38,6 @@ target_include_directories(RCLibTests
 target_link_libraries(RCLibTests 
     PUBLIC 
         RCLib
-    PRIVATE
-        Qt6::Core
 )
 
 set_target_properties(RCLibTests PROPERTIES

@@ -1,5 +1,5 @@
 #pragma once
-#include "DLLExport.h"
+#include "RCLib_Fwd.h"
 
 #include <atomic>
 
@@ -17,9 +17,8 @@ public:
 	Serializable& operator=(Serializable&&)      = delete;
 	Serializable& operator=(const Serializable&) = delete;
 
-	bool IsLoaded() const { return m_loaded; }
-
-	bool IsSaving() const { return m_isSaving; }
+	bool IsLoaded() const { return m_bLoaded; }
+	bool IsSaving() const { return m_bIsSaving; }
 
 protected:
 	// Load and Save are the functions called from the top level, they create the Serializer and call Serialize
@@ -28,9 +27,10 @@ protected:
 	// and Load/Save if they have their own file
 	virtual void Load() {}
 	virtual void Save() {}
+	virtual void Serialize(bool bLoad) {}
 
 private:
-	std::atomic<bool> m_loaded{false};
-	std::atomic<bool> m_isSaving{false};
+	std::atomic<bool> m_bLoaded{false};
+	std::atomic<bool> m_bIsSaving{false};
 };
 } // namespace RCLib

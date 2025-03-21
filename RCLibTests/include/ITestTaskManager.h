@@ -1,5 +1,5 @@
 #pragma once
-#include "RCLib_Fwd.h"
+#include "RCLibTests_Fwd.h"
 
 namespace RCLib::Tests
 {
@@ -7,7 +7,7 @@ namespace RCLib::Tests
 /**
  * @brief Interface for task manager tests
  */
-class RCLIB_API ITestTaskManager
+class RCLIBTESTS_API ITestTaskManager
 {
 public:
 	virtual ~ITestTaskManager() = default;

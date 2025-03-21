@@ -1,15 +1,17 @@
 #pragma once
 #include "RCLibQt_Fwd.h"
 
-#include <QVariant>
 #include <QString>
+#include <QVariant>
 #include <mutex>
 #include <string_view>
 
-namespace RCLib {
-namespace Qt {
+namespace RCLib
+{
+namespace Qt
+{
 
-class Variable
+class RCLIB_QT_API Variable
 {
 public:
 	Variable(std::string_view name, const QVariant& value)

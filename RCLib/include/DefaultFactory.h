@@ -2,6 +2,8 @@
 #include "IFactory.h"
 #include "RCLib_Fwd.h"
 
+#include <typeinfo>
+
 namespace RCLib::Impl
 {
 /**

@@ -1,28 +1,27 @@
 #pragma once
-#include "RCLibQt_Fwd.h"
-#include <QTreeView>
 #include "GenericTreeModel.h"
-#include "SmartPointers.h"
+#include "RCLibQt_Fwd.h"
 
-namespace RCLib {
-namespace Qt {
+#include <QTreeView>
 
-DECLARE_PTR(GenericTreeModel);
+namespace RCLib
+{
+namespace Qt
+{
 
 class GenericTreeView : public QTreeView
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit GenericTreeView(QWidget* pParent = nullptr);
-    virtual ~GenericTreeView() = default;
+	explicit GenericTreeView(QWidget* pParent = nullptr);
+	virtual ~GenericTreeView() = default;
 
-    void SetModel(SharedPtr<GenericTreeModel> pModel);
-    GenericTreeModel* GetModel() const { return m_pModel.get(); }
+	void SetModel(GenericTreeModel* pModel);
 
 protected:
-    SharedPtr<GenericTreeModel> m_pModel;
+	GenericTreeModel* m_pModel;
 };
 
 } // namespace Qt
-} // namespace RCLib 
+} // namespace RCLib

@@ -1,6 +1,10 @@
 #pragma once
 #include "LogWidget.h"
-#include "RCLib.h"
+
+#include <RCLib.h>
+
+#include <fstream>
+#include <mutex>
 
 namespace TestsQt
 {

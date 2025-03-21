@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(RCLib Project VERSION 1.0.0)
+project(RCLibProject LANGUAGES CXX VERSION 1.0.0)
 
 set(Qt6_DIR "C:/Qt/6.6.0/msvc2019_64/lib/cmake/Qt6")
 

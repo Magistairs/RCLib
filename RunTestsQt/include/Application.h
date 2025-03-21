@@ -1,7 +1,9 @@
 #pragma once
-#include <QApplication>
-#include <memory>
 #include "MainWindow.h"
+
+#include <QApplication>
+
+#include <memory>
 
 namespace TestsQt
 {
@@ -11,14 +13,14 @@ namespace TestsQt
 class Application : public QApplication
 {
 public:
-    Application(int& argc, char* argv[]);
-    ~Application() override = default;
+	Application(int& argc, char* argv[]);
+	~Application() override = default;
 
-    bool Initialize();
-    void Run();
+	bool Initialize();
+	void Run();
 
 private:
-    std::unique_ptr<MainWindow> m_pMainWindow;
+	std::unique_ptr<MainWindow> m_pMainWindow;
 };
 
-} // namespace TestsQt 
+} // namespace TestsQt

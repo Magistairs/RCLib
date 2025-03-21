@@ -1,10 +1,9 @@
 #pragma once
 #include "RCLibQt_Fwd.h"
-#include <QObject>
-#include <QJsonValue>
-#include <QString>
-#include "ConfigFile.h"
 
+#include <QJsonValue>
+#include <QObject>
+#include <QString>
 
 #define DECLARE_CONFIG_VALUE(name) \
 	ConfigValue name                 \
@@ -12,10 +11,12 @@
 		#name, &m_config               \
 	}
 
-namespace RCLib {
-namespace Qt {
+namespace RCLib
+{
+namespace Qt
+{
 
-class ConfigValue : public QObject
+class RCLIB_QT_API ConfigValue : public QObject
 {
 public:
 	ConfigValue(const char* label, ConfigFile* pFile);

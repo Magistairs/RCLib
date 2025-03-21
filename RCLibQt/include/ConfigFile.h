@@ -1,14 +1,17 @@
 #pragma once
 #include "RCLibQt_Fwd.h"
+
 #include <QFile>
 #include <QJsonObject>
-#include <QString>
 #include <QObject>
+#include <QString>
 
-namespace RCLib {
-namespace Qt {
+namespace RCLib
+{
+namespace Qt
+{
 
-class ConfigFile : public QFile
+class RCLIB_QT_API ConfigFile : public QFile
 {
 	Q_OBJECT
 

@@ -1,5 +1,5 @@
 #pragma once
-#include "DLLExport.h"
+#include "RCLib_Fwd.h"
 
 namespace RCLib
 {

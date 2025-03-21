@@ -1,8 +1,9 @@
-#include "RCLibQt.h"
 #include "ConfigValue.h"
-#include "RCLib.h"
+#include "ConfigFile.h"
+#include "RCLibQt.h"
 
-using namespace RCLib::Qt;
+namespace RCLib::Qt
+{
 
 ConfigValue::ConfigValue(const char* label, ConfigFile* pFile)
   : m_label(label)
@@ -15,3 +16,4 @@ ConfigValue::~ConfigValue()
 {
 	m_pFile->Object()[m_label] = m_value;
 }
+} // namespace RCLib::Qt

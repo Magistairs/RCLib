@@ -1,0 +1,15 @@
+#pragma once
+
+#include "DefaultStateWrapper.h"
+#include "ICommand.h"
+#include "ICommandManager.h"
+#include "IEngine.h"
+#include "IEntity.h"
+#include "IEntityManager.h"
+#include "IEventManager.h"
+#include "IException.h"
+#include "IFactory.h"
+#include "ILogger.h"
+#include "IMemoryManager.h"
+#include "IMessageManager.h"
+#include "ITaskManager.h"

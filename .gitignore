@@ -399,3 +399,8 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 /out
+/.cursor
+/.vscode
+/build/.cmake
+/build
+/RCLib/build

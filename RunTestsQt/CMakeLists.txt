@@ -7,9 +7,6 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-# Define RCLIB_API for Qt project
-add_definitions(-DRCLIB_API=__declspec\(dllexport\))
-
 # Add the build directory to the package search path
 list(APPEND CMAKE_PREFIX_PATH "${CMAKE_BINARY_DIR}/install")
 
@@ -35,6 +32,7 @@ set(SOURCES
     src/LogWidget.cpp
     src/LogControlWidget.cpp
     src/QtFactory.cpp
+    src/QtLogger.cpp
 )
 
 set(HEADERS

@@ -4,7 +4,9 @@
 namespace RCLib::Impl
 {
 
-DefaultMessageManager::DefaultMessageManager()
+DefaultMessageManager::DefaultMessageManager() {}
+
+bool DefaultMessageManager::OnInitialize()
 {
 	try
 	{
@@ -42,10 +44,6 @@ DefaultMessageManager::DefaultMessageManager()
 	{
 		IEngine::Get().GetLogger()->Error(std::string("Message Manager initialization failed: ") + e.what());
 	}
-}
-
-bool DefaultMessageManager::OnInitialize()
-{
 	return true;
 }
 

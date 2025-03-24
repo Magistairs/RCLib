@@ -6,7 +6,6 @@
 namespace TestsQt
 {
 using IEngine = RCLib::IEngine;
-using namespace RCLibQt;
 
 Application::Application(int& argc, char* argv[])
   : QApplication(argc, argv)
@@ -16,8 +15,8 @@ Application::Application(int& argc, char* argv[])
 bool Application::Initialize()
 {
 	// Create Qt factory first
-	auto               pFactory = MakeShared<QtFactory>();
-	RCLib::IManagerPtr pEngine  = pFactory->Create<RCLib::IStateWrapper<IEngine>>();
+	auto                    pFactory = MakeShared<QtFactory>();
+	RCLib::IStateWrapperPtr pEngine  = MakeShared<RCLib::Impl::DefaultStateWrapper<IEngine>>("Engine", pFactory->Create<IEngine>());
 	// Create engine using the factory
 	if (!pEngine)
 	{
@@ -30,10 +29,6 @@ bool Application::Initialize()
 	// Create main window
 	m_pMainWindow = std::make_unique<MainWindow>();
 	m_pMainWindow->show();
-
-	// Run all tests
-	auto& testRunner = pEngine->GetTestRunner();
-	testRunner.RunAllTests();
 
 	return true;
 }

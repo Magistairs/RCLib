@@ -23,7 +23,7 @@ add_library(RCLibTests SHARED
 
 target_compile_definitions(RCLibTests 
     PRIVATE 
-        RCLIBTESTS_EXPORT
+        RCLIB_TESTS_EXPORT
 )
 
 target_include_directories(RCLibTests 

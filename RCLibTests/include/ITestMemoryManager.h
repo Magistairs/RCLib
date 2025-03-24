@@ -1,4 +1,5 @@
 #pragma once
+#include "ITest.h"
 #include "RCLibTests_Fwd.h"
 
 namespace RCLib::Tests
@@ -7,7 +8,7 @@ namespace RCLib::Tests
 /**
  * @brief Interface for testing the memory manager
  */
-class RCLIBTESTS_API ITestMemoryManager
+class RCLIB_TESTS_API ITestMemoryManager : public ITest
 {
 public:
 	virtual ~ITestMemoryManager() = default;

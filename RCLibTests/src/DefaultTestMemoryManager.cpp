@@ -1,18 +1,24 @@
 #include "DefaultTestMemoryManager.h"
 #include "RCLibTests.h"
-#include "DefaultEngine.h"
 
-namespace RCLib::Impl
+#include <chrono>
+#include <thread>
+
+namespace RCLib::Tests::Impl
 {
 
-TestMemoryManagerImpl::TestMemoryManagerImpl()
+DefaultTestMemoryManager::DefaultTestMemoryManager()
   : DefaultTest("TestMemoryManager")
 {
-	m_manager = MakeShared<MemoryManagerImpl>();
-	m_manager->OnInitialize();
 }
 
-void TestMemoryManagerImpl::Run()
+void DefaultTestMemoryManager::Setup()
+{
+	// Enable memory tracking before running tests
+	IEngine::Get().GetMemoryManager()->EnableTracking(true);
+}
+
+void DefaultTestMemoryManager::Run()
 {
 	TestAllocation();
 	TestDeallocation();
@@ -21,79 +27,76 @@ void TestMemoryManagerImpl::Run()
 	TestThreadSafety();
 }
 
-void TestMemoryManagerImpl::Cleanup()
-{
-	m_manager.reset();
-}
+void DefaultTestMemoryManager::Cleanup() {}
 
-void TestMemoryManagerImpl::TestAllocation()
+void DefaultTestMemoryManager::TestAllocation()
 {
 	void* ptr = malloc(100);
-	m_manager->TrackAllocation(ptr, 100, __FILE__, __LINE__);
+	IEngine::Get().GetMemoryManager()->TrackAllocation(ptr, 100, __FILE__, __LINE__);
 
-	if (m_manager->GetCurrentAllocatedBytes() != 100)
+	if (IEngine::Get().GetMemoryManager()->GetCurrentAllocatedBytes() != 100)
 	{
 		throw std::runtime_error("Allocation tracking failed");
 	}
 
 	free(ptr);
-	m_manager->TrackDeallocation(ptr);
+	IEngine::Get().GetMemoryManager()->TrackDeallocation(ptr);
 }
 
-void TestMemoryManagerImpl::TestDeallocation()
+void DefaultTestMemoryManager::TestDeallocation()
 {
 	void* ptr = malloc(200);
-	m_manager->TrackAllocation(ptr, 200, __FILE__, __LINE__);
+	IEngine::Get().GetMemoryManager()->TrackAllocation(ptr, 200, __FILE__, __LINE__);
 
-	if (m_manager->GetCurrentAllocatedBytes() != 200)
+	if (IEngine::Get().GetMemoryManager()->GetCurrentAllocatedBytes() != 200)
 	{
 		throw std::runtime_error("Deallocation tracking failed");
 	}
 
 	free(ptr);
-	m_manager->TrackDeallocation(ptr);
+	IEngine::Get().GetMemoryManager()->TrackDeallocation(ptr);
 
-	if (m_manager->GetCurrentAllocatedBytes() != 0)
+	if (IEngine::Get().GetMemoryManager()->GetCurrentAllocatedBytes() != 0)
 	{
 		throw std::runtime_error("Deallocation tracking failed");
 	}
 }
 
-void TestMemoryManagerImpl::TestTracking()
+void DefaultTestMemoryManager::TestTracking()
 {
-	m_manager->EnableTracking(false);
+	IEngine::Get().GetMemoryManager()->EnableTracking(false);
 	void* ptr = malloc(300);
-	m_manager->TrackAllocation(ptr, 300, __FILE__, __LINE__);
+	IEngine::Get().GetMemoryManager()->TrackAllocation(ptr, 300, __FILE__, __LINE__);
 
-	if (m_manager->GetCurrentAllocatedBytes() != 0)
+	if (IEngine::Get().GetMemoryManager()->GetCurrentAllocatedBytes() != 0)
 	{
 		throw std::runtime_error("Tracking disable failed");
 	}
 
 	free(ptr);
-	m_manager->TrackDeallocation(ptr);
+	IEngine::Get().GetMemoryManager()->TrackDeallocation(ptr);
 }
 
-void TestMemoryManagerImpl::TestLeakDetection()
+void DefaultTestMemoryManager::TestLeakDetection()
 {
 	void* ptr = malloc(400);
-	m_manager->TrackAllocation(ptr, 400, __FILE__, __LINE__);
+	IEngine::Get().GetMemoryManager()->TrackAllocation(ptr, 400, __FILE__, __LINE__);
 
-	if (!m_manager->CheckForLeaks())
+	if (!IEngine::Get().GetMemoryManager()->CheckForLeaks())
 	{
 		throw std::runtime_error("Leak detection failed");
 	}
 
 	free(ptr);
-	m_manager->TrackDeallocation(ptr);
+	IEngine::Get().GetMemoryManager()->TrackDeallocation(ptr);
 
-	if (m_manager->CheckForLeaks())
+	if (IEngine::Get().GetMemoryManager()->CheckForLeaks())
 	{
 		throw std::runtime_error("Leak detection failed");
 	}
 }
 
-void TestMemoryManagerImpl::TestThreadSafety()
+void DefaultTestMemoryManager::TestThreadSafety()
 {
 	const int                numThreads     = 4;
 	const int                numAllocations = 1000;
@@ -105,9 +108,9 @@ void TestMemoryManagerImpl::TestThreadSafety()
 			for (int j = 0; j < numAllocations; ++j)
 			{
 				void* ptr = malloc(100);
-				m_manager->TrackAllocation(ptr, 100, __FILE__, __LINE__);
+				IEngine::Get().GetMemoryManager()->TrackAllocation(ptr, 100, __FILE__, __LINE__);
 				std::this_thread::sleep_for(std::chrono::milliseconds(1));
-				m_manager->TrackDeallocation(ptr);
+				IEngine::Get().GetMemoryManager()->TrackDeallocation(ptr);
 				free(ptr);
 			}
 		});
@@ -118,10 +121,10 @@ void TestMemoryManagerImpl::TestThreadSafety()
 		thread.join();
 	}
 
-	if (m_manager->GetCurrentAllocatedBytes() != 0)
+	if (IEngine::Get().GetMemoryManager()->GetCurrentAllocatedBytes() != 0)
 	{
 		throw std::runtime_error("Thread safety test failed");
 	}
 }
 
-} // namespace RCLib::Impl
+} // namespace RCLib::Tests::Impl

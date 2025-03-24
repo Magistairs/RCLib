@@ -1,9 +1,6 @@
 #pragma once
-#include "RCLibTests_Fwd.h"
-#include "DLLExport.h"
 #include "ITestEngine.h"
-#include "DefaultTest.h"
-#include "DefaultEngine.h"
+#include "RCLibTests_Fwd.h"
 
 namespace RCLib::Tests::Impl
 {
@@ -11,9 +8,7 @@ namespace RCLib::Tests::Impl
  * @brief Implementation of the Engine test
  * @ingroup Tests
  */
-class RCLIB_API TestEngineImpl
-	: public RCLib::Tests::DefaultTest
-	, public RCLib::Tests::ITestEngine
+class RCLIB_TESTS_API DefaultTestEngine : public ITestEngine
 {
 public:
 	// ITest interface implementation

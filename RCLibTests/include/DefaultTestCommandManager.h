@@ -1,9 +1,8 @@
 #pragma once
 
-#include "DefaultTest.h"
 #include "ITestCommandManager.h"
-#include "DefaultCommandManager.h"
-
+#include "RCLibTests_Fwd.h"
+#include "DefaultTest.h"
 namespace RCLib::Tests::Impl
 {
 
@@ -11,18 +10,16 @@ namespace RCLib::Tests::Impl
  * @brief Implementation of the CommandManager test
  * @ingroup Tests
  */
-class RCLIB_API DefaultTestCommandManager
-	: public DefaultTest
-	, public ITestCommandManager
+class RCLIB_TESTS_API DefaultTestCommandManager : public DefaultTest,public ITestCommandManager
 {
 public:
 	DefaultTestCommandManager();
 	~DefaultTestCommandManager() override = default;
 
 	// ITest interface
-	void Setup() override;
-	void Run() override;
-	void Cleanup() override;
+	void             Setup() override;
+	void             Run() override;
+	void             Cleanup() override;
 	std::string_view GetName() const override { return "CommandManagerTest"; }
 	std::string_view GetDescription() const override { return "Tests the CommandManager functionality"; }
 
@@ -37,8 +34,6 @@ protected:
 	void TestCommandDescriptions() override;
 	void TestCommandManagerPersistence() override;
 
-private:
-	SharedPtr<ICommandManager> m_manager;
 };
 
-} // namespace RCLib::Tests::Impl 
+} // namespace RCLib::Tests::Impl

@@ -1,9 +1,7 @@
 #pragma once
-#include "RCLibTests_Fwd.h"
-#include "DLLExport.h"
-#include "ITestMemoryManager.h"
 #include "DefaultTest.h"
-#include "SmartPointers.h"
+#include "ITestMemoryManager.h"
+#include "RCLibTests_Fwd.h"
 
 namespace RCLib::Tests::Impl
 {
@@ -11,13 +9,13 @@ namespace RCLib::Tests::Impl
 /**
  * @brief Implementation of memory manager tests
  */
-class RCLIB_API TestMemoryManagerImpl
-  : public RCLib::Tests::ITestMemoryManager
-  , public DefaultTest
+class RCLIB_TESTS_API DefaultTestMemoryManager
+  : public DefaultTest
+  , public ITestMemoryManager
 {
 public:
-	TestMemoryManagerImpl();
-	~TestMemoryManagerImpl() override = default;
+	DefaultTestMemoryManager();
+	~DefaultTestMemoryManager() override = default;
 
 	// ITestMemoryManager interface implementation
 	void             Setup() override;
@@ -33,9 +31,6 @@ protected:
 	void TestTracking() override;
 	void TestLeakDetection() override;
 	void TestThreadSafety() override;
-
-private:
-	SharedPtr<MemoryManagerImpl> m_manager;
 };
 
 } // namespace RCLib::Tests::Impl

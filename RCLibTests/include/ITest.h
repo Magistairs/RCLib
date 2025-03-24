@@ -11,7 +11,7 @@ namespace RCLib::Tests
  * Base interface that all test classes must implement.
  * Provides methods for test lifecycle management.
  */
-class RCLIBTESTS_API ITest
+class RCLIB_TESTS_API ITest
 {
 public:
 	virtual ~ITest() = default;

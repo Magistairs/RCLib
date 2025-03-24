@@ -4,10 +4,22 @@
 namespace RCLib::Impl
 {
 
-DefaultCommandManager::DefaultCommandManager()
+DefaultCommandManager::DefaultCommandManager() {}
+
+DefaultCommandManager::~DefaultCommandManager()
+{
+	ClearCommandQueue();
+}
+
+bool DefaultCommandManager::OnInitialize()
 {
 	try
 	{
+		m_commands.clear();
+		m_commandQueue = std::queue<ICommandPtr>();
+		m_commandsHistory.clear();
+		m_isLoaded = false;
+
 		// Add basic commands
 		ICommandPtr undoCmd = AddCommand("undo");
 		undoCmd->SetDescription("Undoes the last executed command");
@@ -23,26 +35,7 @@ DefaultCommandManager::DefaultCommandManager()
 
 		m_isLoaded = true;
 		IEngine::Get().GetLogger()->Info("Command Manager initialized successfully");
-	}
-	catch (const std::exception& e)
-	{
-		IEngine::Get().GetLogger()->Error(std::string("Command Manager initialization failed: ") + e.what());
-	}
-}
 
-DefaultCommandManager::~DefaultCommandManager()
-{
-	ClearCommandQueue();
-}
-
-bool DefaultCommandManager::OnInitialize()
-{
-	try
-	{
-		m_commands.clear();
-		m_commandQueue = std::queue<ICommandPtr>();
-		m_commandsHistory.clear();
-		m_isLoaded = false;
 		return true;
 	}
 	catch (const std::exception& e)
@@ -97,7 +90,7 @@ ICommandPtr DefaultCommandManager::AddCommand(std::string_view name)
 {
 	if (!m_isLoaded)
 	{
-		IEngine::Get().GetLogger()->Error("Cannot add command: Manager not initialized");
+		// IEngine::Get().GetLogger()->Error("Cannot add command: Manager not initialized");
 		return nullptr;
 	}
 

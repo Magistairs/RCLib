@@ -1,14 +1,14 @@
 #include "DefaultTestEntityManager.h"
-#include "DefaultTest.h"
 #include "RCLibTests.h"
-#include "IEngine.h"
+
 #include <random>
 #include <thread>
 
 namespace RCLib::Tests::Impl
 {
+
 DefaultTestEntityManager::DefaultTestEntityManager()
-	: DefaultTest("TestEntityManager")
+	: DefaultTest("TestEntityManager", "Tests the EntityManager with concurrent creation and destruction of entities")
 {
 }
 
@@ -28,7 +28,7 @@ void DefaultTestEntityManager::Setup()
 
 void DefaultTestEntityManager::Run()
 {
-	RunTest("TestEntityManager", [this]() {
+	RunTest("EntityManager", [this]() {
 		CreateEntities();
 		DestroyEntities();
 		Stop();
@@ -47,16 +47,6 @@ void DefaultTestEntityManager::Cleanup()
 	m_entities.clear();
 }
 
-std::string_view DefaultTestEntityManager::GetName() const
-{
-	return "TestEntityManager";
-}
-
-std::string_view DefaultTestEntityManager::GetDescription() const
-{
-	return "Tests the EntityManager with concurrent creation and destruction of entities";
-}
-
 RCLib::IEntityPtr DefaultTestEntityManager::GetRandomEntity(bool remove)
 {
 	std::shared_lock<std::shared_mutex> lock(m_entitiesMutex);
@@ -65,10 +55,10 @@ RCLib::IEntityPtr DefaultTestEntityManager::GetRandomEntity(bool remove)
 		return nullptr;
 	}
 
-	std::random_device rd;
-	std::mt19937 gen(rd());
+	std::random_device              rd;
+	std::mt19937                    gen(rd());
 	std::uniform_int_distribution<> dis(0, static_cast<int>(m_entities.size()) - 1);
-	int index = dis(gen);
+	int                             index = dis(gen);
 
 	RCLib::IEntityPtr entity = m_entities[index];
 	if (remove)
@@ -100,8 +90,7 @@ void DefaultTestEntityManager::CreateEntities()
 		IEngine::Get().GetTaskManager()->AddTask([this]() {
 			for (int j = 0; j < s_numEntitiesToAddByThread && !m_stop; ++j)
 			{
-				auto entityId = IEngine::Get().GetEntityManager()->CreateEntity();
-				auto entity   = IEngine::Get().GetEntityManager()->GetEntity(entityId);
+				auto entity = IEngine::Get().GetEntityManager()->CreateEntity();
 				{
 					std::unique_lock<std::shared_mutex> lock(m_entitiesMutex);
 					m_entities.push_back(entity);
@@ -138,4 +127,5 @@ void DefaultTestEntityManager::DestroyEntities()
 		});
 	}
 }
+
 } // namespace RCLib::Tests::Impl

@@ -1,18 +1,16 @@
 #include "DefaultTestCommandManager.h"
 #include "RCLibTests.h"
 
-namespace RCLib::Impl
+namespace RCLib::Tests::Impl
 {
 DefaultTestCommandManager::DefaultTestCommandManager()
-  : DefaultTest("CommandManager")
+  : DefaultTest("TestCommandManager")
 {
 }
 
 void DefaultTestCommandManager::Setup()
 {
-	auto& engine = IEngine::Get();
-	m_manager = engine.GetFactory()->Create<DefaultCommandManager>();
-	m_manager->OnInitialize();
+
 }
 
 void DefaultTestCommandManager::Run()
@@ -29,16 +27,12 @@ void DefaultTestCommandManager::Run()
 
 void DefaultTestCommandManager::Cleanup()
 {
-	if (m_manager)
-	{
-		m_manager->OnRelease();
-		m_manager.reset();
-	}
+
 }
 
 void DefaultTestCommandManager::TestCommandCreation()
 {
-	auto pCommand = m_manager->AddCommand("TestCommand");
+	auto pCommand = IEngine::Get().GetCommandManager()->AddCommand("TestCommand");
 	AssertNotNull(pCommand.get(), "Command should be created");
 	AssertStringEqual(pCommand->GetName(), "TestCommand", "Command name should match");
 }
@@ -46,7 +40,7 @@ void DefaultTestCommandManager::TestCommandCreation()
 void DefaultTestCommandManager::TestCommandExecution()
 {
 	bool executed = false;
-	auto pCommand = m_manager->AddCommand("TestExecution");
+	auto pCommand = IEngine::Get().GetCommandManager()->AddCommand("TestExecution");
 	pCommand->SetCallback([&executed]() { executed = true; });
 	pCommand->Execute();
 	AssertTrue(executed, "Command execution failed");
@@ -54,67 +48,63 @@ void DefaultTestCommandManager::TestCommandExecution()
 
 void DefaultTestCommandManager::TestCommandQueue()
 {
-	size_t initialQueueSize = m_manager->GetQueueSize();
-	auto pCommand = m_manager->AddCommand("TestQueue");
+	size_t initialQueueSize = IEngine::Get().GetCommandManager()->GetQueueSize();
+	auto   pCommand         = IEngine::Get().GetCommandManager()->AddCommand("TestQueue");
 	pCommand->ExecuteLater();
-	AssertEqual(m_manager->GetQueueSize(), initialQueueSize + 1, "Command queue size mismatch");
+	AssertEqual(IEngine::Get().GetCommandManager()->GetQueueSize(), initialQueueSize + 1, "Command queue size mismatch");
 }
 
 void DefaultTestCommandManager::TestCommandUndo()
 {
 	bool executed = false;
-	bool undone = false;
-	auto pCommand = m_manager->AddCommand("TestUndo");
+	bool undone   = false;
+	auto pCommand = IEngine::Get().GetCommandManager()->AddCommand("TestUndo");
 	pCommand->SetCallback([&executed]() { executed = true; });
-	auto defaultCommand = std::dynamic_pointer_cast<DefaultCommand>(pCommand);
-	defaultCommand->SetUndoCallback([&undone]() { undone = true; });
+	pCommand->SetUndoCallback([&undone]() { undone = true; });
 	pCommand->Execute();
 	AssertTrue(executed, "Command execution failed");
-	m_manager->Undo();
+	IEngine::Get().GetCommandManager()->Undo();
 	AssertTrue(undone, "Command undo failed");
 }
 
 void DefaultTestCommandManager::TestCommandExecuteLater()
 {
 	bool executed = false;
-	auto pCommand = m_manager->AddCommand("TestExecuteLater");
+	auto pCommand = IEngine::Get().GetCommandManager()->AddCommand("TestExecuteLater");
 	pCommand->SetCallback([&executed]() { executed = true; });
 	pCommand->ExecuteLater();
 	AssertFalse(executed, "Command executed immediately instead of being queued");
-	m_manager->OnUpdate();
+	IEngine::Get().GetCommandManager()->OnUpdate();
 	AssertTrue(executed, "Command not executed after update");
 }
 
 void DefaultTestCommandManager::TestCommandShortcuts()
 {
-	auto pCommand = m_manager->AddCommand("TestShortcuts");
+	auto pCommand = IEngine::Get().GetCommandManager()->AddCommand("TestShortcuts");
 	pCommand->SetShortcut("Ctrl+T");
 	AssertStringEqual(pCommand->GetShortcutString(), "Ctrl+T", "Command shortcut mismatch");
 }
 
 void DefaultTestCommandManager::TestCommandDescriptions()
 {
-	auto pCommand = m_manager->AddCommand("TestDescriptions");
+	auto pCommand = IEngine::Get().GetCommandManager()->AddCommand("TestDescriptions");
 	pCommand->SetDescription("Test command description");
 	AssertStringEqual(pCommand->GetDescription(), "Test command description", "Command description mismatch");
 }
 
 void DefaultTestCommandManager::TestCommandManagerPersistence()
 {
-	auto pCommand = m_manager->AddCommand("TestPersistence");
+	auto pCommand = IEngine::Get().GetCommandManager()->AddCommand("TestPersistence");
 	pCommand->SetDescription("Test persistence");
 	pCommand->SetShortcut("Ctrl+P");
 
-	m_manager->Save();
-	m_manager->Load();
+	IEngine::Get().GetCommandManager()->Save();
+	IEngine::Get().GetCommandManager()->Load();
 
-	auto defaultManager = std::dynamic_pointer_cast<DefaultCommandManager>(m_manager);
-	AssertNotNull(defaultManager.get(), "Manager should be DefaultCommandManager");
-	
-	auto loadedCmd = defaultManager->GetCommand("TestPersistence");
+	auto loadedCmd =  IEngine::Get().GetCommandManager()->GetCommand("TestPersistence");
 	AssertNotNull(loadedCmd.get(), "Command should be loaded");
 	AssertStringEqual(loadedCmd->GetDescription(), "Test persistence", "Command description should persist");
 	AssertStringEqual(loadedCmd->GetShortcutString(), "Ctrl+P", "Command shortcut should persist");
 }
 
-} // namespace RCLib::Impl
+} // namespace RCLib::Tests::Impl

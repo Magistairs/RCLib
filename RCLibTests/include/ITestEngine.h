@@ -1,4 +1,5 @@
 #pragma once
+#include "ITest.h"
 #include "RCLibTests_Fwd.h"
 
 namespace RCLib::Tests
@@ -6,7 +7,7 @@ namespace RCLib::Tests
 /**
  * @brief Pure interface for engine testing
  */
-class RCLIBTESTS_API ITestEngine
+class RCLIB_TESTS_API ITestEngine : public ITest
 {
 public:
 	virtual ~ITestEngine() = default;

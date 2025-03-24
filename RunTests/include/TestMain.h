@@ -24,7 +24,5 @@ public:
      */
     bool RunTests();
 
-private:
-    RCLib::Impl::DefaultStateWrapper<RCLib::IEngine> m_engine;
 };
 } // namespace Tests 

@@ -27,6 +27,7 @@ public:
 
 	// Additional command management methods
 	ICommandPtr AddCommand(std::string_view name) override;
+	ICommandPtr              GetCommand(std::string_view name) const override;
 	bool        ExecuteCommand(std::string_view name) override;
 	void        Save() override;
 	void        Load() override;
@@ -38,7 +39,6 @@ public:
 	void OnRelease() override;
 
 	// Additional utility methods
-	ICommandPtr              GetCommand(std::string_view name) const;
 	std::vector<std::string> GetCommandNames() const;
 
 private:

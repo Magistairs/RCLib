@@ -5,21 +5,32 @@
 #include <QObject>
 #include <QString>
 
+#include <string_view>
+
 #define DECLARE_CONFIG_VALUE(name) \
 	ConfigValue name                 \
 	{                                \
 		#name, &m_config               \
 	}
 
-namespace RCLib
-{
-namespace Qt
+namespace RCLib::Qt
 {
 
+/**
+ * @brief Configuration value that automatically saves to a ConfigFile
+ * 
+ * Provides a way to automatically persist QJsonValue data to a ConfigFile.
+ * Values are automatically loaded when the config file is loaded and saved when the ConfigValue is destroyed.
+ */
 class RCLIB_QT_API ConfigValue : public QObject
 {
 public:
-	ConfigValue(const char* label, ConfigFile* pFile);
+	/**
+	 * @brief Constructs a new ConfigValue with the given label and file
+	 * @param label The label to use as the JSON key
+	 * @param pFile The config file to save to/load from
+	 */
+	ConfigValue(std::string_view label, ConfigFile* pFile);
 	virtual ~ConfigValue();
 
 	void operator=(const QJsonValue& value) { m_value = value; }
@@ -32,5 +43,4 @@ protected:
 	ConfigFile* m_pFile{nullptr};
 };
 
-} // namespace Qt
-} // namespace RCLib
+} // namespace RCLib::Qt

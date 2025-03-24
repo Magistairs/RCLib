@@ -7,6 +7,15 @@ namespace RCLib::Impl
 DefaultTaskManager::DefaultTaskManager()
   : m_shouldStop(false)
 {
+}
+
+DefaultTaskManager::~DefaultTaskManager()
+{
+	EndAllTasks();
+}
+
+bool DefaultTaskManager::OnInitialize()
+{
 	try
 	{
 		// Add basic commands
@@ -50,15 +59,6 @@ DefaultTaskManager::DefaultTaskManager()
 	{
 		IEngine::Get().GetLogger()->Error("Task manager initialization failed: " + std::string(e.what()));
 	}
-}
-
-DefaultTaskManager::~DefaultTaskManager()
-{
-	EndAllTasks();
-}
-
-bool DefaultTaskManager::OnInitialize()
-{
 	return true;
 }
 

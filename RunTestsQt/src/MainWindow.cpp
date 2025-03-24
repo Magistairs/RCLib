@@ -52,14 +52,7 @@ void MainWindow::OnClearLog()
 
 void MainWindow::OnTestLog()
 {
-	auto& engine     = RCLib::IEngine::Get();
-	auto& testRunner = *engine.GetTestRunner();
 
-	// Run a simple test
-	testRunner.RunTest("SimpleTest", []() {
-		RCLib::IEngine::Get().GetLogger()->Info("Test passed!");
-		return true;
-	});
 }
 
 void MainWindow::OnSaveLog(const QString& filePath)

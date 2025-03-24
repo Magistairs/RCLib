@@ -38,6 +38,11 @@ public:
 	virtual void SetCallback(std::function<void()>&& callback) = 0;
 
 	/**
+	 * @brief Set the command's undo callback function
+	 */
+	virtual void SetUndoCallback(std::function<void()>&& callback) = 0;
+
+	/**
 	 * @brief Set the command's description
 	 */
 	virtual void SetDescription(std::string_view description) = 0;

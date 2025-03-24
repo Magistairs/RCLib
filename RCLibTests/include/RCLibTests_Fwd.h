@@ -2,13 +2,13 @@
 #include "RCLib_Fwd.h"
 
 #ifdef _WIN32
-#ifdef RCLIBTESTS_EXPORT
-#define RCLIBTESTS_API __declspec(dllexport)
+#ifdef RCLIB_TESTS_EXPORT
+#define RCLIB_TESTS_API __declspec(dllexport)
 #else
-#define RCLIBTESTS_API __declspec(dllimport)
+#define RCLIB_TESTS_API __declspec(dllimport)
 #endif
 #else
-#define RCLIBTESTS_API
+#define RCLIB_TESTS_API
 #endif
 
 #pragma warning(disable : 4251) // 4251 can't be avoided with STL types

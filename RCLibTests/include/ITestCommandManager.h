@@ -1,9 +1,10 @@
 #pragma once
+#include "ITest.h"
 #include "RCLibTests_Fwd.h"
 
 namespace RCLib::Tests
 {
-class RCLIBTESTS_API ITestCommandManager
+class RCLIB_TESTS_API ITestCommandManager : public ITest
 {
 public:
 	virtual ~ITestCommandManager() = default;

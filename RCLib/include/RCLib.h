@@ -12,5 +12,6 @@
 #include "IFactory.h"
 #include "ILogger.h"
 #include "IMemoryManager.h"
+#include "IMessage.h"
 #include "IMessageManager.h"
 #include "ITaskManager.h"

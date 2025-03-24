@@ -7,7 +7,7 @@ namespace RCLib::Tests
  * @brief Interface for running tests and managing test suites
  * @ingroup Core
  */
-class RCLIBTESTS_API ITestRunner
+class RCLIB_TESTS_API ITestRunner
 {
 public:
 	virtual ~ITestRunner() = default;

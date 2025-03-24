@@ -22,14 +22,14 @@ public:
 	void Info(std::string_view message) override;
 	void Warning(std::string_view message) override;
 	void Error(std::string_view message) override;
-	void SetLogLevel(RCLib::LogLevel level) override;
-	void EnableConsoleOutput(bool enable) override;
-	void EnableFileOutput(bool enable) override;
+	void SetLogLevel(RCLib::ELogLevel eLevel) override;
+	void EnableConsoleOutput(bool bEnable) override;
+	void EnableFileOutput(bool bEnable) override;
 	void SetLogFile(const std::filesystem::path& filePath) override;
 
 	// IState interface implementation
-	void OnInitialize() override;
-	void OnUpdate() override;
+	bool OnInitialize() override;
+	bool OnUpdate() override;
 	void OnRelease() override;
 
 	// Qt-specific methods
@@ -40,7 +40,7 @@ private:
 	bool                  m_isInitialized{false};
 	bool                  m_consoleOutput{true};
 	bool                  m_fileOutput{false};
-	RCLib::LogLevel       m_logLevel{RCLib::LogLevel::Info};
+	RCLib::ELogLevel     m_logLevel{RCLib::ELogLevel::eInfo};
 	std::filesystem::path m_logFilePath;
 	std::ofstream         m_logStream;
 	mutable std::mutex    m_logMutex;

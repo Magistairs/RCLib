@@ -1,18 +1,14 @@
 #pragma once
 
-#include "RCLibTests_Fwd.h"
-#include "DLLExport.h"
-#include "ITestMessageManager.h"
 #include "DefaultTest.h"
-#include "DefaultMessageManager.h"
-#include "IMessageManager.h"
+#include "ITestMessageManager.h"
+#include "RCLibTests_Fwd.h"
 
-#include <mutex>
-#include <condition_variable>
 #include <atomic>
+#include <condition_variable>
+#include <mutex>
 #include <string>
 #include <string_view>
-#include <memory>
 
 namespace RCLib::Tests::Impl
 {
@@ -21,13 +17,11 @@ namespace RCLib::Tests::Impl
  * @brief Implementation of the MessageManager test
  * @ingroup Tests
  */
-class RCLIBTESTS_API TestMessageManagerImpl
-  : public DefaultTest
-  , public ITestMessageManager
+class RCLIB_TESTS_API DefaultTestMessageManager : public DefaultTest, public ITestMessageManager
 {
 public:
-	TestMessageManagerImpl();
-	~TestMessageManagerImpl() override = default;
+	DefaultTestMessageManager();
+	~DefaultTestMessageManager() override = default;
 
 	// ITestMessageManager interface implementation
 	void             Setup() override;
@@ -43,11 +37,11 @@ protected:
 	void TestThreadSafety();
 
 private:
-	std::shared_ptr<RCLib::Impl::DefaultMessageManager> m_messageManager;
-	std::atomic<int>                                    m_messageCount{0};
-	std::atomic<int>                                    m_handlerCount{0};
-	std::mutex                                          m_mutex;
-	std::condition_variable                             m_cv;
+	std::atomic<int>        m_messageCount{0};
+	std::atomic<int>        m_handlerCount{0};
+	std::mutex              m_mutex;
+	std::condition_variable m_cv;
+	SharedPtr<IMessageManager> m_messageManager;
 };
 
 } // namespace RCLib::Tests::Impl

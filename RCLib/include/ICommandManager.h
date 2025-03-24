@@ -46,6 +46,7 @@ public:
 
 	// Additional command management methods
 	virtual ICommandPtr AddCommand(std::string_view name)     = 0;
+	virtual ICommandPtr GetCommand(std::string_view name) const    = 0;
 	virtual bool        ExecuteCommand(std::string_view name) = 0;
 	virtual void        Save()                                = 0;
 	virtual void        Load()                                = 0;

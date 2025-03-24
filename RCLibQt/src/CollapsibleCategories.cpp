@@ -6,56 +6,69 @@
 #include <QStyle>
 #include <QStyledItemDelegate>
 
-using namespace RCLib::Qt;
+namespace RCLib::Qt
+{
 
-// Custom item delegate is needed because the default one doesn't render expand/collapse arrows if there is no indentation
+/**
+ * @brief Custom item delegate for drawing expand/collapse arrows.
+ * 
+ * This delegate ensures that expand/collapse arrows are drawn for top-level items
+ * (categories) even when there is no indentation. It also handles proper spacing
+ * and visual appearance of the arrows.
+ */
 class CArrowDelegate : public QStyledItemDelegate
 {
 public:
-	CArrowDelegate(QTreeWidget* pTree)
-	  : QStyledItemDelegate(pTree)
-	  , m_pTree(pTree)
+	explicit CArrowDelegate(QTreeWidget* pTree)
+		: QStyledItemDelegate(pTree)
+		, m_pTree(pTree)
 	{
 	}
 
 	void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override
 	{
-		if (!index.parent().isValid()) // if it's a top level index
+		if (!index.parent().isValid()) // if it's a top level index (category)
 		{
-			const int            spacing    = 2;
+			// Draw the expand/collapse arrow
+			const int spacing = 2;
 			QStyleOptionViewItem optionCopy = option;
 			optionCopy.rect.moveLeft(spacing);
 			optionCopy.rect.setWidth(8);
-			QApplication::style()->drawPrimitive(m_pTree->isExpanded(index) ? QStyle::PE_IndicatorArrowDown : QStyle::PE_IndicatorArrowRight,
-			  &optionCopy,
-			  painter);
+			QApplication::style()->drawPrimitive(
+				m_pTree->isExpanded(index) ? QStyle::PE_IndicatorArrowDown : QStyle::PE_IndicatorArrowRight,
+				&optionCopy,
+				painter
+			);
 
+			// Draw the item text without focus/selection highlighting
 			optionCopy.state &= ~QStyle::State_HasFocus & ~QStyle::State_Selected;
 			optionCopy.rect = option.rect.adjusted(optionCopy.rect.right() + spacing, 0, 0, 0);
 			QStyledItemDelegate::paint(painter, optionCopy, index);
 		}
 		else
 		{
+			// For non-category items, use default painting
 			QStyledItemDelegate::paint(painter, option, index);
 		}
 	}
 
 private:
-	QTreeWidget* m_pTree;
+	QTreeWidget* m_pTree; ///< The tree widget we're drawing for
 };
 
 CollapsibleCategories::CollapsibleCategories(QWidget* parent)
-  : QTreeWidget(parent)
+	: QTreeWidget(parent)
 {
+	// Configure the tree widget appearance
 	setHeaderHidden(true);
 	setIndentation(0);
 	setItemDelegate(new CArrowDelegate(this));
 
-	// No double scrollbar, items are always fully expanded
+	// Configure scrolling behavior
 	setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
 	setVerticalScrollMode(ScrollMode::ScrollPerPixel);
 
-	// Expand on single click
+	// Set up single-click expansion
 	setExpandsOnDoubleClick(false);
 	connect(this, &QTreeWidget::itemPressed, [this](const QTreeWidgetItem* pItem) {
 		if (pItem->isExpanded())
@@ -67,6 +80,7 @@ CollapsibleCategories::CollapsibleCategories(QWidget* parent)
 
 void CollapsibleCategories::AddCategory(const QString& category)
 {
+	// Only add the category if it doesn't already exist
 	if (!m_categories.contains(category))
 	{
 		QTreeWidgetItem* pItem = new QTreeWidgetItem(this);
@@ -78,6 +92,7 @@ void CollapsibleCategories::AddCategory(const QString& category)
 
 void CollapsibleCategories::AddItem(const QString& category, const QString& item)
 {
+	// Only add the item if the category exists
 	if (m_categories.contains(category))
 	{
 		QTreeWidgetItem* pItem = new QTreeWidgetItem(m_categories[category]);
@@ -95,14 +110,12 @@ bool CollapsibleCategories::eventFilter(QObject* object, QEvent* event)
 {
 	if (event->type() == QEvent::LayoutRequest)
 	{
-		// We know that top level items are categories,
-		// that categories have only 1 child which is the content widget
-		// and that the content widgets events are listened here
+		// Handle layout updates for content widgets
 		const int childrenCount = topLevelItemCount();
 		for (int i = 0; i < childrenCount; ++i)
 		{
-			QTreeWidgetItem* pItem       = topLevelItem(i)->child(0);
-			QWidget*         pItemWidget = itemWidget(pItem, 0);
+			QTreeWidgetItem* pItem = topLevelItem(i)->child(0);
+			QWidget* pItemWidget = itemWidget(pItem, 0);
 			if (object == pItemWidget)
 			{
 				scheduleDelayedItemsLayout();
@@ -112,3 +125,5 @@ bool CollapsibleCategories::eventFilter(QObject* object, QEvent* event)
 	}
 	return QTreeWidget::eventFilter(object, event);
 }
+
+} // namespace RCLib::Qt

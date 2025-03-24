@@ -8,24 +8,21 @@ namespace Tests
 {
 
 TestMain::TestMain()
-    : m_engine("Engine", RCLib::IFactory::Get()->Create<RCLib::IEngine>())
 {
 }
 
 bool TestMain::OnInitialize()
 {
-   return  m_engine.Get()->OnInitialize();
+   return true;
 }
 
 bool TestMain::OnUpdate()
 {
-    while(m_engine.Get()->OnUpdate());
     return true;
 }
 
 void TestMain::OnRelease()
 {
-    m_engine.Release();
 }
 
 bool TestMain::RunTests()

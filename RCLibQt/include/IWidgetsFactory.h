@@ -16,7 +16,7 @@ class OutputLog;
 class TestRunnerWidget;
 
 // Factory interface for creating all widget types
-class RCLIB_API IWidgetsFactory
+class RCLIB_QT_API IWidgetsFactory
 {
 public:
 	static IWidgetsFactory& Get();

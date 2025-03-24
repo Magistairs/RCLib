@@ -1,42 +1,40 @@
 #include "DefaultTestMessageManager.h"
 #include "RCLibTests.h"
-#include "DefaultEngine.h"
+#include <RCLib.h>
+
+#include <chrono>
 #include <mutex>
 #include <thread>
-#include <chrono>
 
-
-namespace RCLib::Impl
+namespace RCLib::Tests::Impl
 {
 // Test message class
 class TestMessage : public IMessage
 {
 public:
-    TestMessage(int value)
-      : m_value(value)
-    {
-    }
-    TMessageType        GetType() const override { return GetMessageTypeID<TestMessage>(); }
-    int                 GetValue() const { return m_value; }
-    SharedPtr<IMessage> Clone() const override { return MakeShared<TestMessage>(m_value); }
+	TestMessage(int value)
+	  : m_value(value)
+	{
+	}
+	TMessageType        GetType() const override { return GetMessageTypeID<TestMessage>(); }
+	int                 GetValue() const { return m_value; }
+	SharedPtr<IMessage> Clone() const override { return MakeShared<TestMessage>(m_value); }
 
 private:
-    int m_value;
+	int m_value;
 };
-TestMessageManagerImpl::TestMessageManagerImpl()
-  : DefaultTest("TestMessageManager")
+
+DefaultTestMessageManager::DefaultTestMessageManager()
+  : DefaultTest("TestMessageManager", "Tests the MessageManager's functionality and thread safety")
 {
-	m_messageCount = 0;
-	m_handlerCount = 0;
 }
 
-void TestMessageManagerImpl::Setup()
+void DefaultTestMessageManager::Setup()
 {
-	m_messageManager = MakeShared<DefaultMessageManager>();
-	m_messageManager->Initialize();
+	m_messageManager = IEngine::Get().GetMessageManager();
 }
 
-void TestMessageManagerImpl::Run()
+void DefaultTestMessageManager::Run()
 {
 	TestMessageRegistration();
 	TestMessagePosting();
@@ -44,27 +42,38 @@ void TestMessageManagerImpl::Run()
 	TestThreadSafety();
 }
 
-void TestMessageManagerImpl::Cleanup()
+void DefaultTestMessageManager::Cleanup()
 {
-	// Cleanup is handled in individual test methods
+
 }
 
-void TestMessageManagerImpl::TestMessageRegistration()
+void DefaultTestMessageManager::TestMessageRegistration()
 {
 	LogInfo("Testing message registration...");
 
 	// Test message handler
-	auto handler = [this](const TestMessage& msg) {
-		m_messageCount++;
-		if (m_messageCount == 1)
-		{
-			std::unique_lock<std::mutex> lock(m_mutex);
-			m_cv.notify_one();
+	auto handler = [this](const IMessage& msg) {
+		if (auto testMsg = dynamic_cast<const TestMessage*>(&msg)) {
+			m_messageCount++;
+			if (m_messageCount == 1)
+			{
+				std::unique_lock<std::mutex> lock(m_mutex);
+				m_cv.notify_one();
+			}
 		}
 	};
 
 	// Register handler
-	m_messageManager->RegisterMessageHandler<TestMessage>(handler);
+	m_messageManager->RegisterMessageHandler(GetMessageTypeID<TestMessage>(), [this](const IMessage& msg) {
+		if (auto testMsg = dynamic_cast<const TestMessage*>(&msg)) {
+			m_messageCount++;
+			if (m_messageCount == 1)
+			{
+				std::unique_lock<std::mutex> lock(m_mutex);
+				m_cv.notify_one();
+			}
+		}
+	});
 	AssertTrue(true, "Handler registration should succeed");
 
 	// Post test message
@@ -78,32 +87,34 @@ void TestMessageManagerImpl::TestMessageRegistration()
 		m_cv.wait_for(lock, std::chrono::seconds(1), [this]() { return m_messageCount > 0; });
 	}
 
-	AssertEqual(1, m_messageCount, "Message should be processed once");
+	AssertEqual(1, m_messageCount.load(), "Message should be processed once");
 
 	// Post another message - should still be processed
 	TestMessage testMsg2(43);
 	m_messageManager->PostMessage(testMsg2);
 	m_messageManager->ProcessMessages();
 
-	AssertEqual(2, m_messageCount, "Message should still be processed after registration");
+	AssertEqual(2, m_messageCount.load(), "Message should still be processed after registration");
 }
 
-void TestMessageManagerImpl::TestMessagePosting()
+void DefaultTestMessageManager::TestMessagePosting()
 {
 	LogInfo("Testing message posting...");
 
 	// Test message handler
-	auto handler = [this](const TestMessage& msg) {
-		m_messageCount++;
-		if (m_messageCount == 5)
-		{
-			std::unique_lock<std::mutex> lock(m_mutex);
-			m_cv.notify_one();
+	auto handler = [this](const IMessage& msg) {
+		if (auto testMsg = dynamic_cast<const TestMessage*>(&msg)) {
+			m_messageCount++;
+			if (m_messageCount == 5)
+			{
+				std::unique_lock<std::mutex> lock(m_mutex);
+				m_cv.notify_one();
+			}
 		}
 	};
 
 	// Register handler
-	m_messageManager->RegisterMessageHandler<TestMessage>(handler);
+	m_messageManager->RegisterMessageHandler(GetMessageTypeID<TestMessage>(),handler);
 
 	// Post multiple messages
 	for (int i = 0; i < 5; ++i)
@@ -121,37 +132,41 @@ void TestMessageManagerImpl::TestMessagePosting()
 		m_cv.wait_for(lock, std::chrono::seconds(1), [this]() { return m_messageCount >= 5; });
 	}
 
-	AssertEqual(5, m_messageCount, "All messages should be processed");
+	AssertEqual(5, m_messageCount.load(), "All messages should be processed");
 }
 
-void TestMessageManagerImpl::TestMultipleHandlers()
+void DefaultTestMessageManager::TestMultipleHandlers()
 {
 	LogInfo("Testing multiple handlers...");
 
-	// Test handlers
-	auto handler1 = [this](const TestMessage& msg) {
-		m_messageCount++;
-		if (m_messageCount == 2)
-		{
-			std::unique_lock<std::mutex> lock(m_mutex);
-			m_cv.notify_one();
+	// Test callbacks
+	auto handler1 = [this](const IMessage& msg) {
+		if (auto testMsg = dynamic_cast<const TestMessage*>(&msg)) {
+			m_messageCount++;
+			if (m_messageCount == 2)
+			{
+				std::unique_lock<std::mutex> lock(m_mutex);
+				m_cv.notify_one();
+			}
 		}
 	};
 
-	auto handler2 = [this](const TestMessage& msg) {
-		m_handlerCount++;
-		if (m_handlerCount == 1)
-		{
-			std::unique_lock<std::mutex> lock(m_mutex);
-			m_cv.notify_one();
+	auto handler2 = [this](const IMessage& msg) {
+		if (auto testMsg = dynamic_cast<const TestMessage*>(&msg)) {
+			m_handlerCount++;
+			if (m_handlerCount == 1)
+			{
+				std::unique_lock<std::mutex> lock(m_mutex);
+				m_cv.notify_one();
+			}
 		}
 	};
 
 	// Register multiple handlers
-	m_messageManager->RegisterMessageHandler<TestMessage>(handler1);
-	m_messageManager->RegisterMessageHandler<TestMessage>(handler2);
+	m_messageManager->RegisterMessageHandler(GetMessageTypeID<TestMessage>(), handler1);
+	m_messageManager->RegisterMessageHandler(GetMessageTypeID<TestMessage>(), handler2);
 
-	// Post message
+	// Post event
 	TestMessage msg(42);
 	m_messageManager->PostMessage(msg);
 	m_messageManager->ProcessMessages();
@@ -162,26 +177,28 @@ void TestMessageManagerImpl::TestMultipleHandlers()
 		m_cv.wait_for(lock, std::chrono::seconds(1), [this]() { return m_messageCount >= 2 && m_handlerCount >= 1; });
 	}
 
-	AssertEqual(2, m_messageCount, "First handler should be called twice");
-	AssertEqual(1, m_handlerCount, "Second handler should be called once");
+	AssertEqual(2, m_messageCount.load(), "First handler should be called twice");
+	AssertEqual(1, m_handlerCount.load(), "Second handler should be called once");
 }
 
-void TestMessageManagerImpl::TestThreadSafety()
+void DefaultTestMessageManager::TestThreadSafety()
 {
 	LogInfo("Testing thread safety...");
 
 	// Test message handler
-	auto handler = [this](const TestMessage& msg) {
-		m_messageCount++;
-		if (m_messageCount == 100)
-		{
-			std::unique_lock<std::mutex> lock(m_mutex);
-			m_cv.notify_one();
+	auto handler = [this](const IMessage& msg) {
+		if (auto testMsg = dynamic_cast<const TestMessage*>(&msg)) {
+			m_messageCount++;
+			if (m_messageCount == 100)
+			{
+				std::unique_lock<std::mutex> lock(m_mutex);
+				m_cv.notify_one();
+			}
 		}
 	};
 
 	// Register handler
-	m_messageManager->RegisterMessageHandler<TestMessage>(handler);
+	m_messageManager->RegisterMessageHandler(GetMessageTypeID<TestMessage>(), handler);
 
 	// Create multiple threads posting messages
 	std::vector<std::thread> threads;
@@ -211,7 +228,7 @@ void TestMessageManagerImpl::TestThreadSafety()
 		m_cv.wait_for(lock, std::chrono::seconds(1), [this]() { return m_messageCount >= 100; });
 	}
 
-	AssertEqual(100, m_messageCount, "All messages should be processed in thread-safe manner");
+	AssertEqual(100, m_messageCount.load(), "All messages should be processed in thread-safe manner");
 }
 
-} // namespace RCLib::Impl
+} // namespace RCLib::Tests::Impl

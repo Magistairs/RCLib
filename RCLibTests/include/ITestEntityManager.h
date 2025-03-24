@@ -1,9 +1,10 @@
 #pragma once
+#include "ITest.h"
 #include "RCLibTests_Fwd.h"
 
 namespace RCLib::Tests
 {
-class RCLIBTESTS_API ITestEntityManager
+class RCLIB_TESTS_API ITestEntityManager : public ITest
 {
 protected:
 	virtual void       CreateEntities()             = 0;

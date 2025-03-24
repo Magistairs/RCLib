@@ -1,4 +1,5 @@
 #pragma once
+#include "ITest.h"
 #include "RCLibTests_Fwd.h"
 
 namespace RCLib::Tests
@@ -13,7 +14,7 @@ namespace RCLib::Tests
  * - Multiple handlers for same message type
  * - Thread safety
  */
-class RCLIBTESTS_API ITestMessageManager
+class RCLIB_TESTS_API ITestMessageManager : public ITest
 {
 public:
 	virtual ~ITestMessageManager() = default;

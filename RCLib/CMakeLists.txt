@@ -26,6 +26,8 @@ add_library(RCLib SHARED
     ${RCLIB_CORE_HEADERS}
 )
 
+add_library(RCLib::RCLib ALIAS RCLib)
+
 target_compile_definitions(RCLib 
     PRIVATE 
         RCLIB_EXPORT
@@ -39,7 +41,7 @@ target_include_directories(RCLib
 
 # Core library only needs minimal Qt dependencies
 target_link_libraries(RCLib 
-    PRIVATE 
+    PUBLIC
         Qt6::Core
 )
 
@@ -49,6 +51,8 @@ set_target_properties(RCLib PROPERTIES
     ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+    DEBUG_POSTFIX "d"
+    OUTPUT_NAME "RCLib"
 )
 
 # Install targets
@@ -84,6 +88,7 @@ configure_package_config_file(
     "${CMAKE_CURRENT_SOURCE_DIR}/cmake/RCLibConfig.cmake.in"
     "${CMAKE_CURRENT_BINARY_DIR}/RCLibConfig.cmake"
     INSTALL_DESTINATION lib/cmake/RCLib
+    PATH_VARS CMAKE_INSTALL_PREFIX
 )
 
 # Install config files
@@ -91,6 +96,12 @@ install(FILES
     "${CMAKE_CURRENT_BINARY_DIR}/RCLibConfig.cmake"
     "${CMAKE_CURRENT_BINARY_DIR}/RCLibConfigVersion.cmake"
     DESTINATION lib/cmake/RCLib
+)
+
+# Export build directory
+export(EXPORT RCLibTargets
+    FILE "${CMAKE_CURRENT_BINARY_DIR}/RCLibTargets.cmake"
+    NAMESPACE RCLib::
 )
 
 # Print installation paths for debugging

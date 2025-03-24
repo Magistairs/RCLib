@@ -1,25 +1,24 @@
 #pragma once
-#include "RCLibTests_Fwd.h"
-#include "IEventManager.h"
-#include "ITestEventManager.h"
 #include "DefaultTest.h"
-#include "DefaultEventManager.h"
-#include <mutex>
-#include <condition_variable>
+#include "ITestEventManager.h"
+#include "RCLibTests_Fwd.h"
+
 #include <atomic>
+#include <condition_variable>
+#include <mutex>
 
 namespace RCLib::Tests::Impl
 {
 /**
  * @brief Implementation of the EventManager test
  */
-class RCLIB_API TestEventManagerImpl
-  : public ITestEventManager
-  , public DefaultTest
+class RCLIB_TESTS_API DefaultTestEventManager
+  : public DefaultTest
+  , public ITestEventManager
 {
 public:
-	TestEventManagerImpl();
-	~TestEventManagerImpl() override = default;
+	DefaultTestEventManager();
+	~DefaultTestEventManager() override = default;
 
 	// ITestEventManager interface implementation
 	void             Setup() override;
@@ -35,11 +34,11 @@ protected:
 	void TestThreadSafety();
 
 private:
-	SharedPtr<DefaultMessageManager> m_messageManager;
-	std::mutex                      m_mutex;
-	std::condition_variable         m_cv;
-	int                            m_messageCount{0};
-	int                            m_handlerCount{0};
+	std::mutex               m_mutex;
+	std::condition_variable  m_cv;
+	std::atomic<int>         m_eventCount{0};
+	std::atomic<int>         m_callbackCount{0};
+	SharedPtr<IEventManager> m_eventManager;
 };
 
 } // namespace RCLib::Tests::Impl

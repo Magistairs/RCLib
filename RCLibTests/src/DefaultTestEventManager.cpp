@@ -1,26 +1,25 @@
 #include "DefaultTestEventManager.h"
 #include "RCLibTests.h"
-#include "DefaultEngine.h"
+
+#include <chrono>
 #include <mutex>
 #include <thread>
-#include <chrono>
 
-namespace RCLib::Impl
+namespace RCLib::Tests::Impl
 {
 
-TestEventManagerImpl::TestEventManagerImpl()
-  : DefaultTest("TestEventManager")
+DefaultTestEventManager::DefaultTestEventManager()
+  : DefaultTest("TestEventManager", "Tests the EventManager's functionality and thread safety")
 {
 }
 
-void TestEventManagerImpl::Setup()
+void DefaultTestEventManager::Setup()
 {
 	m_eventCount    = 0;
 	m_callbackCount = 0;
-	m_eventManager  = MakeShared<EventManagerImpl>();
 }
 
-void TestEventManagerImpl::Run()
+void DefaultTestEventManager::Run()
 {
 	TestEventRegistration();
 	TestEventPosting();
@@ -28,12 +27,9 @@ void TestEventManagerImpl::Run()
 	TestThreadSafety();
 }
 
-void TestEventManagerImpl::Cleanup()
-{
-	// Cleanup is handled in individual test methods
-}
+void DefaultTestEventManager::Cleanup() {}
 
-void TestEventManagerImpl::TestEventRegistration()
+void DefaultTestEventManager::TestEventRegistration()
 {
 	LogInfo("Testing event registration...");
 
@@ -48,12 +44,12 @@ void TestEventManagerImpl::TestEventRegistration()
 	};
 
 	// Register callback
-	m_eventManager->AddEventListener(this, 0, callback);
+	IEngine::Get().GetEventManager()->AddEventListener(this, 0, callback);
 	AssertTrue(true, "Callback registration should succeed");
 
 	// Post test event
-	m_eventManager->PostEvent(0);
-	m_eventManager->ProcessEvents();
+	IEngine::Get().GetEventManager()->PostEvent(0);
+	IEngine::Get().GetEventManager()->ProcessEvents();
 
 	// Wait for event processing
 	{
@@ -61,19 +57,19 @@ void TestEventManagerImpl::TestEventRegistration()
 		m_cv.wait_for(lock, std::chrono::seconds(1), [this]() { return m_eventCount > 0; });
 	}
 
-	AssertEqual(1, m_eventCount, "Event should be processed once");
+	AssertEqual(1, m_eventCount.load(), "Event should be processed once");
 
 	// Remove callback
-	m_eventManager->RemoveEventListener(this, 0);
+	IEngine::Get().GetEventManager()->RemoveEventListener(this, 0);
 
 	// Post another event - should not be processed
-	m_eventManager->PostEvent(0);
-	m_eventManager->ProcessEvents();
+	IEngine::Get().GetEventManager()->PostEvent(0);
+	IEngine::Get().GetEventManager()->ProcessEvents();
 
-	AssertEqual(1, m_eventCount, "Event should not be processed after removal");
+	AssertEqual(1, m_eventCount.load(), "Event should not be processed after removal");
 }
 
-void TestEventManagerImpl::TestEventPosting()
+void DefaultTestEventManager::TestEventPosting()
 {
 	LogInfo("Testing event posting...");
 
@@ -88,16 +84,16 @@ void TestEventManagerImpl::TestEventPosting()
 	};
 
 	// Register callback
-	m_eventManager->AddEventListener(this, 0, callback);
+	IEngine::Get().GetEventManager()->AddEventListener(this, 0, callback);
 
 	// Post multiple events
 	for (int i = 0; i < 5; ++i)
 	{
-		m_eventManager->PostEvent(0);
+		IEngine::Get().GetEventManager()->PostEvent(0);
 	}
 
 	// Process events
-	m_eventManager->ProcessEvents();
+	IEngine::Get().GetEventManager()->ProcessEvents();
 
 	// Wait for event processing
 	{
@@ -105,13 +101,13 @@ void TestEventManagerImpl::TestEventPosting()
 		m_cv.wait_for(lock, std::chrono::seconds(1), [this]() { return m_eventCount >= 5; });
 	}
 
-	AssertEqual(5, m_eventCount, "All events should be processed");
+	AssertEqual(5, m_eventCount.load(), "All events should be processed");
 
 	// Cleanup
-	m_eventManager->RemoveEventListener(this, 0);
+	IEngine::Get().GetEventManager()->RemoveEventListener(this, 0);
 }
 
-void TestEventManagerImpl::TestMultipleListeners()
+void DefaultTestEventManager::TestMultipleListeners()
 {
 	LogInfo("Testing multiple listeners...");
 
@@ -135,12 +131,12 @@ void TestEventManagerImpl::TestMultipleListeners()
 	};
 
 	// Register multiple callbacks
-	m_eventManager->AddEventListener(this, 0, callback1);
-	m_eventManager->AddEventListener(this, 0, callback2);
+	IEngine::Get().GetEventManager()->AddEventListener(this, 0, callback1);
+	IEngine::Get().GetEventManager()->AddEventListener(this, 0, callback2);
 
 	// Post event
-	m_eventManager->PostEvent(0);
-	m_eventManager->ProcessEvents();
+	IEngine::Get().GetEventManager()->PostEvent(0);
+	IEngine::Get().GetEventManager()->ProcessEvents();
 
 	// Wait for event processing
 	{
@@ -148,14 +144,14 @@ void TestEventManagerImpl::TestMultipleListeners()
 		m_cv.wait_for(lock, std::chrono::seconds(1), [this]() { return m_eventCount >= 2 && m_callbackCount >= 1; });
 	}
 
-	AssertEqual(2, m_eventCount, "First callback should be called twice");
-	AssertEqual(1, m_callbackCount, "Second callback should be called once");
+	AssertEqual(2, m_eventCount.load(), "First callback should be called twice");
+	AssertEqual(1, m_callbackCount.load(), "Second callback should be called once");
 
 	// Cleanup
-	m_eventManager->RemoveEventListener(this, 0);
+	IEngine::Get().GetEventManager()->RemoveEventListener(this, 0);
 }
 
-void TestEventManagerImpl::TestThreadSafety()
+void DefaultTestEventManager::TestThreadSafety()
 {
 	LogInfo("Testing thread safety...");
 
@@ -169,8 +165,8 @@ void TestEventManagerImpl::TestThreadSafety()
 		}
 	};
 
-	// Register callback
-	m_eventManager->AddEventListener(this, 0, callback);
+	// Register handler
+	IEngine::Get().GetEventManager()->AddEventListener(this, 0, callback);
 
 	// Create multiple threads posting events
 	std::vector<std::thread> threads;
@@ -179,7 +175,7 @@ void TestEventManagerImpl::TestThreadSafety()
 		threads.emplace_back([this]() {
 			for (int j = 0; j < 10; ++j)
 			{
-				m_eventManager->PostEvent(0);
+				IEngine::Get().GetEventManager()->PostEvent(0);
 			}
 		});
 	}
@@ -191,7 +187,7 @@ void TestEventManagerImpl::TestThreadSafety()
 	}
 
 	// Process events
-	m_eventManager->ProcessEvents();
+	IEngine::Get().GetEventManager()->ProcessEvents();
 
 	// Wait for event processing
 	{
@@ -199,10 +195,7 @@ void TestEventManagerImpl::TestThreadSafety()
 		m_cv.wait_for(lock, std::chrono::seconds(1), [this]() { return m_eventCount >= 100; });
 	}
 
-	AssertEqual(100, m_eventCount, "All events should be processed in thread-safe manner");
-
-	// Cleanup
-	m_eventManager->RemoveEventListener(this, 0);
+	AssertEqual(100, m_eventCount.load(), "All messages should be processed in thread-safe manner");
 }
 
-} // namespace RCLib::Impl
+} // namespace RCLib::Tests::Impl

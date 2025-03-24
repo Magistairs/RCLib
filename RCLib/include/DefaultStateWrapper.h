@@ -12,7 +12,7 @@ namespace RCLib::Impl
  * @tparam T The managed type
  */
 template<typename T>
-class RCLIB_API DefaultStateWrapper : public IStateWrapper
+class DefaultStateWrapper : public IStateWrapper
 {
 public:
 	/**

@@ -6,9 +6,13 @@ if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
     set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/install" CACHE PATH "Installation prefix" FORCE)
 endif()
 
-# Set paths for RCLib and RCLibTests
-set(RCLib_DIR "${CMAKE_SOURCE_DIR}/../build/RCLib/CMakeFiles")
-set(RCLibTests_DIR "${CMAKE_SOURCE_DIR}/../build/RCLibTests/CMakeFiles")
+# Find RCLib package
+find_package(RCLib REQUIRED CONFIG
+    PATHS "${CMAKE_BINARY_DIR}"
+          "${CMAKE_BINARY_DIR}/RCLib"
+          "${CMAKE_BINARY_DIR}/../RCLib"
+          "${CMAKE_INSTALL_PREFIX}/lib/cmake/RCLib"
+)
 
 # Console test runner sources
 add_executable(RunTests 

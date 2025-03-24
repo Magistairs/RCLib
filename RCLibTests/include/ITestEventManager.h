@@ -1,7 +1,8 @@
 #pragma once
+#include "ITest.h"
 #include "RCLibTests_Fwd.h"
 
-namespace RCLib
+namespace RCLib::Tests
 {
 /**
  * @brief Interface for testing the EventManager
@@ -12,7 +13,7 @@ namespace RCLib
  * - Multiple listeners for same event
  * - Thread safety
  */
-class RCLIBTESTS_API ITestEventManager
+class RCLIB_TESTS_API ITestEventManager : public ITest
 {
 public:
 	virtual ~ITestEventManager() = default;
@@ -21,4 +22,4 @@ protected:
 	ITestEventManager() = default;
 };
 
-} // namespace RCLib
+} // namespace RCLib::Tests

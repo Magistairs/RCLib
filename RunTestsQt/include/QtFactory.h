@@ -4,20 +4,23 @@
 #include <DefaultFactory.h>
 #include <RCLib.h>
 
-namespace RCLibQt
+#include <memory>
+#include <typeinfo>
+
+namespace TestsQt
 {
 
 /**
  * @brief Factory for creating Qt-specific implementations of RCLib components
  */
-class RCLIB_API QtFactory : public RCLib::Impl::DefaultFactory
+class QtFactory : public RCLib::Impl::DefaultFactory
 {
 public:
 	QtFactory()                    = default;
 	~QtFactory() noexcept override = default;
 
 protected:
-	RCLib::SharedPtr<void> DoCreate(const std::type_info& type, const CreateArgs& args = {}) override;
+	SharedPtr<void> CreateImpl(const std::type_info& type) override;
 };
 
-} // namespace RCLibQt
+} // namespace TestsQt
